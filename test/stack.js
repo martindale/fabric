@@ -2,6 +2,7 @@ var assert = require('assert');
 var expect = require('chai').expect;
 
 var Fabric = require('../');
+var functions = require('../lib/functions');
 
 describe('Stack', function () {
   it('should correctly compute a known instruction', function () {
@@ -22,12 +23,7 @@ describe('Stack', function () {
   it('can add two numbers', function () {
     var fabric = new Fabric();
 
-    fabric.use('ADD', function (state) {
-      var op = this.stack.pop();
-      var a = this.stack.pop();
-      var b = this.stack.pop();
-      return parseInt(a) + parseInt(b);
-    });
+    fabric.use('ADD', functions.OP_ADD);
 
     fabric.stack.push('1');
     fabric.stack.push('1');
@@ -42,12 +38,7 @@ describe('Stack', function () {
   it('can add two other numbers', function () {
     var fabric = new Fabric();
 
-    fabric.use('ADD', function (state) {
-      var op = this.stack.pop();
-      var a = this.stack.pop();
-      var b = this.stack.pop();
-      return parseInt(a) + parseInt(b);
-    });
+    fabric.use('ADD', functions.OP_ADD);
 
     fabric.stack.push('123');
     fabric.stack.push('456');

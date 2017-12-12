@@ -9,5 +9,8 @@
       "challenge": "identity",
       "result": 1
     }
+  },
+  "ops": {
+    "OP_TRUE": ""
   }
 }

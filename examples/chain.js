@@ -1,3 +1,5 @@
+'use strict';
+
 var namespace = 'playnet';
 
 var Block = require('../lib/block');
@@ -7,6 +9,22 @@ var Transaction = require('../lib/transaction');
 var block = new Block(); // linked list
 var chain = new Chain(); // secured tree
 var ledger = chain.ledger; // simple list
+
+async function main () {
+  var genesis = new Block();
+  genesis._sign();
+
+  await chain.append(genesis);
+
+  chain.compute();
+
+  var blocks = await chain._listBlocks();
+
+  console.log('output (CHAIN):', chain);
+  console.log('REPLAY:', 'blocks', blocks);
+  console.log('REPLAY:', 'chain id', chain['@id']);
+
+}
 
 /*
 var Challenge = require('../lib/challenge');
@@ -113,19 +131,3 @@ chain.on('mutation', function(ops) {
 });
 
 main();
-
-async function main () {
-  var genesis = new Block();
-  genesis._sign();
-
-  await chain.append(genesis);
-
-  chain.compute();
-
-  var blocks = await chain._listBlocks();
-
-  console.log('output (CHAIN):', chain);
-  console.log('REPLAY:', 'blocks', blocks);
-  console.log('REPLAY:', 'chain id', chain['@id']);
-
-}
