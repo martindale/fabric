@@ -18,4 +18,11 @@ describe('Peer', function () {
     
     assert.equal(me['@id'], '44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a');
   });
+  
+  it('can connect to a peer', function () {
+    var me = new Peer();
+    var them = new Peer();
+    
+    assert.equal(0, 1);
+  });
 });

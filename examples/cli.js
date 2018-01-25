@@ -4,11 +4,16 @@
 const CLI = require('../lib/cli');
 
 async function main () {
-  const cli = new CLI({
-    ui: './assets/cli.jade'
-  });
+  try {
+    const cli = new CLI({
+      ui: './assets/cli.jade'
+    });
 
-  cli.start();
+    cli.start();
+  } catch (exception) {
+    console.error('[CLI]', 'exception', exception);
+  }
+
 }
 
 main();

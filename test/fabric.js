@@ -75,6 +75,12 @@ describe('Fabric', function () {
     alice.on('auth', async function validate (identity) {
       await alice.chain.storage.close();
 
+      console.log('alice:', alice);
+      console.log('identity:', identity);
+      
+      
+      
+      console.log('comparing:', alice.identity.key.public, identity.key.public);
       assert.equal(alice.identity.key.public, identity.key.public);
       return done();
     });

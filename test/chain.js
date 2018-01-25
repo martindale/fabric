@@ -112,4 +112,24 @@ describe('Chain', function () {
     assert.equal(original['@data'][0], zero);
     
   });
+  
+  it('can mine a new block', async function () {
+    var chain = new Chain();
+    var block = new Block(genesis);
+
+    block.compute();
+
+    await chain.append(block);
+    
+    chain.once('candidate', function (candidate) {
+      console.log('candidate:', candidate);
+      assert.equal(candidate['@data'].parent, block['@id']);
+    });
+
+    await chain.mine();
+    
+    assert.equal(chain['@data'][1].parent, block['@id']);
+    
+    console.log('chain:', chain);
+  });
 });

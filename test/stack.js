@@ -64,4 +64,36 @@ describe('Stack', function () {
     assert.equal(fabric['@data'], 579);
     assert.equal(fabric.clock, 1);
   });
+
+  it('can retrieve a function signature', function () {
+    function adder (state) {
+      var op = this.stack.pop();
+      var a = this.stack.pop();
+      var b = this.stack.pop();
+      return parseInt(a) + parseInt(b);
+    }
+
+    var data = JSON.stringify(adder, function(key, val) {
+      if (typeof val === 'function') {
+        return val + '';
+      }
+      return val;
+    });
+
+    var fabric = new Fabric();
+    var signature = new Fabric.Vector();
+
+    fabric.use('ADD', signature._sign()['@id']);
+    
+    console.log('fabric:', fabric);
+
+    fabric.stack.push('1');
+    fabric.stack.push('1');
+    fabric.stack.push('ADD');
+
+    fabric.compute();
+
+    assert.equal(fabric['@data'], 2);
+    assert.equal(fabric.clock, 1);
+  });
 });

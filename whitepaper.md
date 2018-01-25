@@ -11,7 +11,7 @@ We present a protocol for a distributed messaging system as an alternative to
 the current client-server model of the World Wide Web.  We extend the
 document-oriented approach provided by Timothy Berners-Lee with a new
 transactional messaging model, and also provide a mechanism for incentivizing
-the continued servicing of particular documents. 
+the continued servicing of particular documents.
 
 ## Introduction
 Fabric implements a versioned, strongly-typed, and content-addressable network
@@ -136,13 +136,18 @@ for ordering.  This is desirable when developing asynchronous systems.  However,
 for conflict resolution, one might want to identify which particular message
 came first.  This leaves us with the timestamping problem.
 
+### Multi-Currency Routing
+Fabric allows any digital currency to be offered in exchange for computations,
+giving local nodes the ability to fine-tune their resource utilization based on
+their preference of medium.
+
 ## Protocol
 The Fabric protocol implements a mechanism for representing a largely
 intangible idea, trust, as a pre-established commitment in a slightly more
 tangible fashion, a value token.  If a network is composed primarily of honest,
 friendly nodes, then commitments increase over time until the updates provided
 by the network cease to be valuable.  Should a node cease being honest, it
-destroys its ability to increase in value over time. 
+destroys its ability to increase in value over time.
 
 ### Security
 #### Contract Signatures

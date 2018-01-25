@@ -10,12 +10,22 @@ const Relationship = require('../resources/relationship');
 window.app = new App({
   scripts: ['app.js'],
   resources: {
-    'Person': Person,
-    'Post': Post,
-    'Relationship': Relationship,
+    'Component': {
+      name: 'Component',
+      components: {
+        query: 'fabric-component-index'
+      }
+    },
+    //'Person': Person,
+    //'Post': Post,
+    //'Relationship': Relationship,
   },
   authorities: {
-    
+    'maki.io': {},
+    'verse.im': {},
+    'fabric.fm': {},
+    'soundtrack.io': {},
+    'www.roleplaygateway.com': {},
   }
 });
 

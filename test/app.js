@@ -12,8 +12,12 @@ describe('App', function () {
   it('should create an application smoothly', async function () {
     var app = new Fabric.App();
 
-    await app.tips.close();
-    await app.stash.close();
+    try {
+      await app.tips.close();
+      await app.stash.close();
+    } catch (e) {
+      assert.ok(!e);
+    }
 
     assert.ok(app);
   });
@@ -25,6 +29,11 @@ describe('App', function () {
 
     await oracle._load('./resources');
 
+    console.log('oracle:', oracle);
+    var resources = await oracle._OPTIONS('/');
+    
+    console.log('resources from OPTIONS request:', resources);
+
     var app = new Fabric.App();
 
     await app._defer(oracle);
@@ -34,6 +43,8 @@ describe('App', function () {
     await app.stash.close();
 
     await oracle.storage.close();
+    
+    console.log('finally:');
 
     assert.ok(oracle);
     assert.ok(app);

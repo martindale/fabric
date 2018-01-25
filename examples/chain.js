@@ -43,6 +43,7 @@ chain.on('patch', function(x) {
   console.log('[CHAIN]', 'NOOP',  'event', '"patch"', x.steps[0]);
 });
 
+// this is the chain's internal ledger
 ledger.on('mutation', function(mutation) {
   console.log('[LEDGER]', 'NOOP', 'mutation:', mutation, this._serialize());
 });
