@@ -2,23 +2,19 @@
 
 import Fabric from '../';
 
-//const Oracle = require('./oracle');
-//const CLI = require('../lib/cli');
-
 async function main () {
-  const cli = new Fabric.CLI({
-    ui: './assets/cli.jade'
-  });
+  const cli = new Fabric.CLI();
 
-  cli.oracle.define('Chat', {
+  // TODO: move to lib/chat.js
+  cli.oracle.define('Message', {
     routes: {
-      query: '/chats'
+      list: '/messages',
+      get: '/messages/:id'
     }
   });
 
   try {
-    cli.start();
-    cli.oracle.start();
+    await cli.start();
   } catch (E) {
     console.error('[CLI]', 'main()', E);
   }
