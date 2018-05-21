@@ -7,7 +7,7 @@ const expect = require('chai').expect;
 
 describe('CLI', function () {
   it('should expose a constructor', function () {
-    assert.equal(typeof Fabric.CLI, 'function');
+    assert.equal(Fabric.CLI instanceof Function, true);
   });
 
   it('should create an CLI smoothly', async function () {
@@ -19,6 +19,9 @@ describe('CLI', function () {
       assert.ok(cli);
     } catch (E) {
       console.error(E);
+      await cli.stop();
     }
+
+    await cli.stop();
   });
 });

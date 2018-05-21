@@ -167,6 +167,42 @@ When a new peer joins the Fabric network, he must connect to a known peer to adv
 
 #### Peering
 
+##### Protocol
+Fabric channels use a binary protocol for establishing communications.  Once a
+connection is established, authentication and encryption begin.  First, let's
+define our binary protocol.
+
+###### Initial Connection
+**Initiator:**
+```
+PUSH 1 byte: version number
+PUSH 33 bytes: compressed ephemeral public key
+PUSH 16 bytes: poly1305
+SEND
+```
+
+**Responder:**
+```
+PUSH 1 byte: version number
+PUSH 33 bytes: compressed ephemeral public key
+PUSH 16 bytes: poly1305
+SEND
+```
+
+**Initiator:**
+```
+PUSH 1 byte: version number
+PUSH 33 bytes: compressed ephemeral public key (encrypted with ChaChat20)
+PUSH 16 bytes: poly1305 AEAD construction
+PUSH 16 bytes: final authentication
+SEND
+```
+
+###### Inner Protocol
+The Fabric messaging system uses a fixed-sized `header` and an optional, variable-length `payload`.  Headers consist of (in order) a 4-byte `magic` number  (`uint32BE`), a 4-byte `version` number  (`uint32BE`), a 4-byte message `type` (`uint32BE`), a 4-byte payload size (`uint32BE`), and a 32-byte message `hash`  (`charArray`).
+
+Total header size: `4 + 4 + 4 + 4 + 32 = 48 bytes`
+
 ##### Reputation
 Peers are responsible for tracking their own reputation state for known peers, and can request from their peers the reputation of others (web of trust).  Furthermore, peer reputations can be broadcast, but can safely be ignored if they do not originate from a peer you trust!
 
