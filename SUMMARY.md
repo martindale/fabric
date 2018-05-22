@@ -10,4 +10,4 @@
 
 ## Documentation
 * [Specification](snippets/specification.md)
-* [API Reference](docs)
+* [API Reference](https://dev.fabric.pub/docs)
