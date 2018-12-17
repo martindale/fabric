@@ -2,22 +2,28 @@
 
 import Fabric from '../';
 
-async function main () {
-  const cli = new Fabric.CLI();
+const Swarm = require('../lib/swarm');
 
-  // TODO: move to lib/chat.js
-  cli.oracle.define('Message', {
-    routes: {
-      list: '/messages',
-      get: '/messages/:id'
-    }
-  });
+const config = {
+  oracle: {
+    path: `./data/${process.env['NAME'] || 'cli'}`,
+    port: process.env['PORT'] || 3007
+  }
+};
+
+async function main () {
+  const cli = new Fabric.CLI(config);
 
   try {
     await cli.start();
   } catch (E) {
     console.error('[CLI]', 'main()', E);
   }
+
+  cli.oracle.on('/messages', function (msg) {
+    // TODO: standardize an API for addressable messages in Oracle/HTTP
+    // console.log('MAIN', 'received message:', msg);
+  });
 }
 
 main();
