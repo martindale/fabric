@@ -22,8 +22,8 @@ allowing them to operate independent of network availability or consensus.
 Participants in a Fabric-speaking network may compete for contracts, earning
 digital currency in exchange for processing "work orders" made available to them
 through the peer-to-peer network.  Included is a simple programming language for
-the construction of deterministic, formally-verified smart contracts, which are
-then broadcast to network participants for execution.
+the construction of deterministic, formally-verifiable smart contracts, which
+are then broadcast to network participants for execution.
 
 Contracts requiring secure execution may be divided into smaller sub-programs,
 broadcast to the network as discrete instructions, and later re-composed into a
@@ -46,20 +46,6 @@ The Fabric reference implementation exposes a simple message-passing interface
 using [the actor model][actor-model].  Message handlers are defined as pure
 functions — singular input and output values — which can then be composed to
 form complex state trees known as "state bubbles".
-
-```js
-let Fabric = require('fabric');
-let app = new Fabric();
-
-function add (base, number) {
-  return base + number;
-}
-
-app.use('ADD', add, 'Integer');
-```
-
-`app.compute('1 1 ADD')` may now be called to compute the result of calling
-`add` on `1`, the first instruction on the stack.
 
 ## Resource Contracts
 Each Fabric contract, known as an Application Resource Contract, defines a list
@@ -121,8 +107,8 @@ const Fabric = require('fabric');
 const service = new Fabric();
 ```
 
-`service` now contains a full instance of Fabric, including `GET` and `SET`
-methods for storing and retrieving documents.  Use `npm run examples` to see
+`service` now contains a full instance of Fabric, including `SET` and `GET`
+methods for publishing and retrieving documents.  Use `npm run examples` to see
 more.
 
 ## Why?
@@ -211,7 +197,8 @@ Twitter: [@FabricProtocol][twitter]
 
 [everything-is-broken]: https://medium.com/message/everything-is-broken-81e5f33a24e1
 [coordination]: https://i.imgur.com/Ki3fbTh.gif
-[bitcoin-donations]: bitcoin:3Nc9HqZdfQR7W6c1JN926Rc7vU6eT1wxxn
+[bitcoin-donations]: bitcoin:3CHGLadfbcKrM1sS5uYtASaq75VAuMSMpb
+[bitcoin-donations-image]: https://fabric.pub/assets/3CHGLadfbcKrM1sS5uYtASaq75VAuMSMpb.png
 [gratipay]: https://gratipay.com/fabric
 [twitter]: https://twitter.com/FabricProtocol
 [join]: https://maki.io/community

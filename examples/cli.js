@@ -1,28 +1,37 @@
 'use strict';
 
-import Fabric from '../';
-
-const Swarm = require('../lib/swarm');
-
+const CLI = require('../lib/cli');
 const config = {
+  path: `./data/${process.env['NAME'] || 'cli'}`,
+  persistent: true,
   oracle: {
-    path: `./data/${process.env['NAME'] || 'cli'}`,
     port: process.env['PORT'] || 3007
   }
 };
 
 async function main () {
-  const cli = new Fabric.CLI(config);
+  const cli = new CLI(config);
 
   try {
     await cli.start();
   } catch (E) {
-    console.error('[CLI]', 'main()', E);
+    cli.error(`λ`, 'main()', E);
   }
 
-  cli.oracle.on('/messages', function (msg) {
-    // TODO: standardize an API for addressable messages in Oracle/HTTP
-    // console.log('MAIN', 'received message:', msg);
+  cli.on('changes', async function (msg) {
+    cli.log('[MAIN:CLI]', 'cli event changes:', msg);
+  });
+
+  cli.on('state', function (msg) {
+    cli.log('[MAIN:CLI]', 'state:', msg);
+  });
+
+  cli.on('state/tip', function (msg) {
+    cli.log('[MAIN:CLI]', 'state/tip:', msg);
+  });
+
+  cli.on('error', function (E) {
+    console.error('EXCEPTION:', E);
   });
 }
 
