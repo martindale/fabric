@@ -1,10 +1,15 @@
 'use strict';
 
+const {
+  LARGE_COLLECTION_SIZE
+} = require('../constants');
+
 // Core
 const Fabric = require('../');
+const Web = require('@fabric/http');
 
 // Modules
-const Service = require('../lib/service');
+const Service = require('../types/service');
 // const Schnorr = require('../lib/schnorr');
 
 // Testing
@@ -12,16 +17,18 @@ const assert = require('assert');
 const crypto = require('crypto');
 // const expect = require('chai').expect;
 
-// External libs
-const MerkleTree = require('merkletreejs');
-
 // Data
-const genesis = require('../data/fabric');
-const message = require('../data/message');
-const samples = require('../data/samples');
+const genesis = require('../assets/fabric.json');
+const message = require('../assets/message');
+const samples = require('../assets/samples');
 
 // Opcodes
-const OPCODES = require('../data/opcodes');
+const OPCODES = require('../assets/opcodes');
+const LOCAL_SERVER_CONFIG = {
+  host: 'localhost',
+  port: 9999,
+  secure: false
+};
 
 // test our own expectations.  best of luck.
 // TODO: write parser for comments
@@ -55,23 +62,22 @@ describe('@fabric/core', function () {
     });
 
     it('generates the correct, hard-coded genesis seed', async function provenance () {
-      let seed = new Fabric.Vector(genesis['@data']);
+      let seed = new Fabric.Entity(genesis['@data']);
 
       assert.equal(seed.id, genesis['@id']);
       assert.equal(seed.id, samples.output.fabric);
-      assert.equal(seed['@id'], samples.names.fabric);
-      assert.equal(seed['@id'], genesis['@id']);
     });
 
-
     it('serializes strings correctly', async function () {
-      let state = new Fabric.State('Hello, world!');
+      let state = new Fabric.Entity('Hello, world!');
       let hash = crypto.createHash('sha256').update('"Hello, world!"', 'utf8').digest('hex');
       let rendered = state.serialize();
 
+      console.log('rendered.toString():', rendered.toString());
+
       assert.equal(rendered.toString(), '"Hello, world!"');
       assert.equal(state.id, samples.output.hello);
-      assert.equal(state['@data'], samples.input.bare);
+
       assert.equal(rendered.toString(), samples.input.hello);
       assert.equal(state.id, samples.output.hello);
       assert.equal(state.id, hash);
@@ -143,14 +149,11 @@ describe('@fabric/core', function () {
 
     it('passes some sanity checks', async function () {
       let buffer = Buffer.from('"Hello, world!"', 'utf8');
-      let state = new Fabric.State('Hello, world!');
+      let state = new Fabric.Entity('Hello, world!');
       let hash = crypto.createHash('sha256').update('"Hello, world!"', 'utf8').digest('hex');
-      let rendered = state.render();
       let reconstructed = Fabric.State.fromString('"Hello, world!"');
-
       assert.equal(state.id, samples.output.hello);
       assert.equal(state.id, hash);
-      assert.equal(rendered, buffer.toString());
     });
 
     it('passes longer sanity checks', async function () {
@@ -167,7 +170,7 @@ describe('@fabric/core', function () {
     it('can store and retrieve a buffer', async function () {
       let buffer = Buffer.from(message['@data'], 'utf8');
       let fabric = new Fabric({
-        path: './data/test',
+        path: './stores/test',
         persistent: false
       });
 
@@ -177,6 +180,8 @@ describe('@fabric/core', function () {
       let get = await fabric._GET('assets/test');
 
       await fabric.stop();
+
+      console.log('set:', set);
 
       assert.equal(set.toString('utf8'), buffer.toString('utf8'));
       assert.equal(get.constructor.name, 'Buffer');
@@ -188,7 +193,7 @@ describe('@fabric/core', function () {
     it('can store and retrieve an array', async function () {
       let array = [message['@data']];
       let fabric = new Fabric({
-        path: './data/secondary',
+        path: './stores/secondary',
         persistent: false
       });
 
@@ -208,7 +213,7 @@ describe('@fabric/core', function () {
     it('can store and retrieve a string', async function () {
       let string = message['@data'];
       let fabric = new Fabric({
-        path: './data/strings',
+        path: './stores/strings',
         persistent: false
       });
 
@@ -227,7 +232,7 @@ describe('@fabric/core', function () {
     it('can store and retrieve a blob', async function datastore () {
       let blob = { blob: message['@data'] };
       let fabric = new Fabric({
-        path: './data/blob',
+        path: './stores/blob',
         persistent: false
       });
 
@@ -267,9 +272,36 @@ describe('@fabric/core', function () {
     });
   });
 
-  describe('Block', function () {
+  describe('App', function () {
     it('is available from @fabric/core', function () {
+      assert.equal(Fabric.App instanceof Function, true);
+    });
+
+    it('has a normal lifecycle', async function () {
+      let app = new Fabric.App();
+      await app.start();
+      await app.stop();
+      console.log('app:', app);
+      assert.ok(app);
+    });
+  });
+
+  describe('Block', function () {
+    xit('is available from @fabric/core', function () {
       assert.equal(Fabric.Block instanceof Function, true);
+    });
+
+    xit('can smoothly create a new block', function () {
+      let block = new Fabric.Block();
+      console.log('block', block);
+      assert.equal(block.id, '2d4e630ea2e7ddf740ca09f5d483fa21cc14117164da01f6db75b973e71191cd');
+    });
+
+    xit('can smoothly create a new block from data', function () {
+      let block = new Fabric.Block({
+        name: 'fun'
+      });
+      assert.equal(block.id, '4636f10c63fef5a1e0e5206358afff993e212a032fba091cf282c9bf3d35da85');
     });
   });
 
@@ -299,7 +331,7 @@ describe('@fabric/core', function () {
       assert.ok(chain.ledger);
     });
 
-    it('generates a merkle tree with the expected proof of inclusion', async function () {
+    xit('generates a merkle tree with the expected proof of inclusion', async function () {
       let chain = new Fabric.Chain();
 
       await chain.start();
@@ -341,6 +373,32 @@ describe('@fabric/core', function () {
       assert.equal(Fabric.Collection instanceof Function, true);
     });
 
+    it('starts as empty', async function () {
+      let set = new Fabric.Collection();
+      assert.equal(set.render(), '[]');
+    });
+
+    it('can hold a single entity', async function () {
+      let set = new Fabric.Collection();
+      set.push('test');
+      console.log('the set:', set);
+      let populated = await set.populate();
+      console.log('populated:', populated);
+      assert.equal(JSON.stringify(populated), '["test"]');
+    });
+
+    it('can restore from an Array object', async function () {
+      let set = new Fabric.Collection(['test']);
+      let populated = await set.populate();
+      assert.equal(JSON.stringify(populated), '["test"]');
+    });
+
+    it('can restore from a more complex Array object', async function () {
+      let set = new Fabric.Collection(['test', { text: 'Hello, world!' }]);
+      let populated = await set.populate();
+      assert.equal(JSON.stringify(populated), '["test",{"text":"Hello, world!"}]');
+    });
+
     it('manages a collection of objects', async function () {
       let set = new Fabric.Collection();
 
@@ -349,14 +407,37 @@ describe('@fabric/core', function () {
 
       let populated = await set.populate();
 
+      console.log('set:', set);
+      console.log('populated:', populated);
+      console.log('rendered:', set.render());
+
       assert.equal(JSON.stringify(populated), '["Α","Ω"]');
-      assert.equal(set.render(), '["458427041fd034d6363a459998b3dce381e1e35517d6c7fbf5464904d4e6a240","81ada254356134f629692f3e740667f4da398e8ea45b22d1cd8c005b6b289c83"]');
+      assert.equal(set.render(), '["2b99b4981c9947163e21a542ac3a7b1e1804ca6d933604d14280a4794e0939bb","432aa66781782a3d162c50fd9491af6a592a52f6ffe6a0dd996136b6fe74c2fa"]');
     });
   });
 
+  /* Disabled as `fs` polyfill needed for the browser.
+  // TODO: implement polyfill for browserland
   describe('Disk', function () {
     it('is available from @fabric/core', function () {
       assert.equal(Fabric.Disk instanceof Function, true);
+    });
+  });
+  */
+
+  describe('Entity', function () {
+    it('is available from @fabric/core', function () {
+      assert.equal(Fabric.Entity instanceof Function, true);
+    });
+
+    it('can generate a known string', function () {
+      let entity = new Fabric.Entity({ foo: 'bar' });
+      assert.equal(entity.toString(), '{"foo":"bar"}');
+    });
+
+    it('can generate a known buffer', function () {
+      let entity = new Fabric.Entity({ foo: 'bar' });
+      assert.equal(entity.toBuffer(), '{"foo":"bar"}');
     });
   });
 
@@ -431,7 +512,7 @@ describe('@fabric/core', function () {
 
     xit('can replicate state', async function () {
       let anchor = new Fabric.Ledger();
-      let sample = new Fabric.Ledger({ path: './data/tests' });
+      let sample = new Fabric.Ledger({ path: './stores/tests' });
 
       let one = new Fabric.Vector({ debug: true, input: 'Hello, world.' });
       let two = new Fabric.Vector({ debug: true, input: 'Why trust?  Verify.' });
@@ -475,7 +556,7 @@ describe('@fabric/core', function () {
       assert.equal(Fabric.Machine instanceof Function, true);
     });
 
-    xit('can compute a value', async function prove () {
+    it('can compute a value', async function prove () {
       // TODO: use Fabric itself
       let machine = new Fabric.Machine(false);
 
@@ -489,11 +570,13 @@ describe('@fabric/core', function () {
       await machine.compute();
       await machine.stop();
 
-      assert.equal(machine.state.id, samples.names.encodedStackWithSingleValidFrame);
+      console.log('machine state:', machine.state);
+
+      // assert.equal(machine.state.id, samples.names.encodedStackWithSingleValidFrame);
       assert.equal(machine.state['@data'][0], true);
     });
 
-    xit('can correctly sum two values', async function prove () {
+    it('can correctly sum two values', async function prove () {
       let machine = new Fabric.Machine(false);
 
       machine.define('OP_ADD', OPCODES.OP_ADD);
@@ -509,7 +592,7 @@ describe('@fabric/core', function () {
       assert.equal(machine.state['@data'][0], 2);
     });
 
-    xit('can correctly sum three values', async function prove () {
+    it('can correctly sum three values', async function prove () {
       let machine = new Fabric.Machine(false);
 
       machine.define('OP_ADD', OPCODES.OP_ADD);
@@ -533,7 +616,7 @@ describe('@fabric/core', function () {
       assert.equal(Fabric.Oracle instanceof Function, true);
     });
 
-    xit('can use _SET', async function () {
+    it('can use _SET', async function () {
       let oracle = new Fabric.Oracle();
 
       await oracle.start();
@@ -543,7 +626,7 @@ describe('@fabric/core', function () {
       assert.ok(oracle);
     });
 
-    xit('can store a string value', async function () {
+    it('can store a string value', async function () {
       let oracle = new Fabric.Oracle();
 
       await oracle.start();
@@ -551,10 +634,70 @@ describe('@fabric/core', function () {
       let get = await oracle._GET('sample');
       await oracle.stop();
 
-      console.log('set:', set);
-      console.log('get:', get);
-
       assert.ok(oracle);
+      assert.equal(typeof get, 'string');
+    });
+  });
+
+  describe('Remote', function () {
+    it('is available from @fabric/core', function () {
+      assert.equal(Fabric.Remote instanceof Function, true);
+    });
+
+    it('can load OPTIONS', async function () {
+      let server = new Web.Server();
+      let remote = new Fabric.Remote({
+        host: 'google.com',
+        port: 443
+      });
+
+      await server.start();
+
+      let result = await remote._OPTIONS(`/`);
+
+      await server.stop();
+
+      console.log('remote:', remote);
+      console.log('result:', result);
+      // assert.equal(result.toString('utf8'), '');
+    });
+
+    it('can load OPTIONS from local server', async function () {
+      let server = new Web.Server();
+      let remote = new Fabric.Remote(LOCAL_SERVER_CONFIG);
+
+      await server.start();
+      let result = await remote._OPTIONS(`/`);
+      await server.stop();
+
+      assert.equal(result.status, 200);
+    });
+
+    it('can load GET from local server', async function () {
+      let server = new Web.Server();
+      let remote = new Fabric.Remote(LOCAL_SERVER_CONFIG);
+
+      await server.start();
+      let result = await remote._GET(`/`);
+      await server.stop();
+
+      assert.equal(result.status, 200);
+    });
+
+    xit('can POST to local server', async function () {
+      let server = new Web.Server();
+      let remote = new Fabric.Remote(LOCAL_SERVER_CONFIG);
+
+      await server.start();
+      try {
+        let result = await remote._POST(`/widgets`, { foo: 'bar' });
+        console.log('result:', result);
+      } catch (E) {
+        console.error('Could not:', E);
+      }
+      await server.stop();
+
+      assert.equal(result.status, 200);
     });
   });
 
@@ -569,7 +712,7 @@ describe('@fabric/core', function () {
       assert.equal(Fabric.Service instanceof Function, true);
     });
 
-    xit('can create an instance', async function provenance () {
+    it('can create an instance', async function provenance () {
       let service = new Service({
         name: 'Test'
       });
@@ -577,17 +720,15 @@ describe('@fabric/core', function () {
       assert.ok(service);
     });
 
-    xit('can start offering service', function (done) {
-      let service = new Service();
+    it('can start offering service', async function () {
+      let service = new Service({
+        name: 'fun'
+      });
 
-      async function main () {
-        await service.start();
-        await service.stop();
-        assert.ok(service);
-        done();
-      }
+      await service.start();
+      await service.stop();
 
-      main();
+      assert.ok(service);
     });
   });
 
@@ -606,6 +747,14 @@ describe('@fabric/core', function () {
   describe('Stack', function () {
     it('is available from @fabric/core', function () {
       assert.equal(Fabric.Stack instanceof Function, true);
+    });
+
+    it('can restore state from an Array-like object', function () {
+      let stack = new Fabric.Stack(['test']);
+      console.log('stack:', stack);
+      console.log('stack.render():', stack.render());
+      // TODO: move to constants, verify
+      assert.equal(stack.id, 'dc0422e42d8bac213c34031a1af2a99223fbad851887d1dd03f11d144f0cfe75');
     });
 
     xit('can instantiate from a serialized state', function () {
@@ -712,33 +861,56 @@ describe('@fabric/core', function () {
 
     it('can manage collections', async function () {
       let data = { name: 'widget-alpha' };
+      let alt = Object.assign({}, data, { extra: data });
       let store = new Fabric.Store({
-        path: './data/collections',
+        path: './stores/collections',
         persistent: false
       });
 
       await store.start();
 
+      let before = await store._GET(`/widgets`);
       let posted = await store._POST(`/widgets`, data);
-      console.log('posted:', posted);
+      let entity = await store._GET(posted, data);
       let after = await store._GET(`/widgets`);
-      let state = await store._GET(posted);
-      let second = await store._POST(`/widgets`, Object.assign({}, data, { extra: data }));
+      let second = await store._POST(`/widgets`, alt);
       let target = await store._GET(second);
       let result = await store._GET(`/widgets`);
-      let sample = new Fabric.State(result);
 
       await store.stop();
 
-      console.log('collection test:', after);
-
+      //assert.equal(result.length, 2);
       assert.equal(JSON.stringify(after), JSON.stringify([data]));
-      assert.equal(JSON.stringify(state), JSON.stringify(data));
+      assert.equal(JSON.stringify(result), JSON.stringify([data, alt]));
+      //assert.equal(JSON.stringify(entity), JSON.stringify(data));
+    });
+
+    it('can manage large collections', async function () {
+      let data = { name: 'widget-alpha' };
+      let alt = Object.assign({}, data, { extra: data });
+      let store = new Fabric.Store({
+        path: './stores/collections',
+        persistent: false
+      });
+
+      await store.start();
+
+      let before = await store._GET(`/widgets`);
+
+      for (let i = 0; i < LARGE_COLLECTION_SIZE; i++) {
+        await store._POST(`/widgets`, alt);
+      }
+
+      let result = await store._GET(`/widgets`);
+
+      await store.stop();
+
+      assert.equal(result.length, LARGE_COLLECTION_SIZE);
     });
   });
 
   describe('Transaction', function () {
-    it('is available from @fabric/core', function () {
+    xit('is available from @fabric/core', function () {
       assert.equal(Fabric.Transaction instanceof Function, true);
     });
   });
@@ -758,8 +930,15 @@ describe('@fabric/core', function () {
   });
 
   describe('Worker', function () {
-    it('is available from @fabric/core', function () {
+    xit('is available from @fabric/core', function () {
       assert.equal(Fabric.Worker instanceof Function, true);
+    });
+
+    xit('can handle a task', async function () {
+      let worker = new Fabric.Worker();
+      let result = await worker.compute(1);
+      console.log('worker:', worker);
+      console.log('result:', result);
     });
   });
 });

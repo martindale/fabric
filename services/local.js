@@ -1,12 +1,12 @@
 'use strict';
 
-const Service = require('../lib/service');
+const Service = require('../types/service');
 
 class Local extends Service {
   constructor (config) {
     super(config);
     this.config = Object.assign({
-      path: './data/local'
+      path: './stores/local'
     }, config);
     return this;
   }
@@ -16,7 +16,11 @@ class Local extends Service {
     let data = Object.assign({
       actor: message.user,
       target: message.channel,
-      object: message.text
+      object: message.text,
+      origin: {
+        type: 'Link',
+        name: 'Internal'
+      }
     }, message);
     this.emit('message', data);
   }
