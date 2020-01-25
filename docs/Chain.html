@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Class: Fabric &middot; Docs</title>
+  <title>Class: Chain &middot; Docs</title>
   <script src="scripts/prettify/prettify.js"> </script>
   <script src="scripts/prettify/lang-css.js"> </script>
   <!--[if lt IE 9]>
@@ -15,7 +15,7 @@
 
 <body>
   <div id="main">
-    <h1 class="page-title">Class: Fabric</h1>
+    <h1 class="page-title">Class: Chain</h1>
 
 
 
@@ -24,9 +24,9 @@
 
       <header>
 
-        <h2><span class="attribs"><span class="type-signature"></span></span>Fabric<span class="signature">(settings<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Chain<span class="signature">(genesis)</span><span class="type-signature"></span></h2>
 
-        <div class="class-description">Interact with the Fabric network as if it were a local object.</div>
+        <div class="class-description">Chain.</div>
 
 
       </header>
@@ -41,12 +41,16 @@
 
 
 
-          <h4 class="name" id="Fabric"><span class="type-signature"></span>new Fabric<span class="signature">(settings<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+          <h4 class="name" id="Chain"><span class="type-signature"></span>new Chain<span class="signature">(genesis)</span><span class="type-signature"></span></h4>
 
 
 
 
 
+
+          <div class="description">
+            Holds an immutable chain of events.
+          </div>
 
 
 
@@ -69,7 +73,59 @@
                 <th>Type</th>
 
 
-                <th>Attributes</th>
+
+
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+
+              <tr>
+
+                <td class="name"><code>genesis</code></td>
+
+
+                <td class="type">
+
+
+                  <span class="param-type"><a href="Vector.html">Vector</a></span>
+
+
+
+                </td>
+
+
+
+
+
+                <td class="description last">Initial state for the chain of events.</td>
+              </tr>
+
+
+            </tbody>
+          </table>
+
+
+
+
+
+
+          <h5 class="subsection-title">Properties:</h5>
+
+
+
+          <table class="props">
+            <thead>
+              <tr>
+
+                <th>Name</th>
+
+
+                <th>Type</th>
+
 
 
 
@@ -83,24 +139,13 @@
 
               <tr>
 
-                <td class="name"><code>settings</code></td>
+                <td class="name"><code>name</code></td>
 
 
                 <td class="type">
 
 
-                  <span class="param-type">Object</span>
-
-
-
-                </td>
-
-
-                <td class="attributes">
-
-                  &lt;optional><br>
-
-
+                  <span class="param-type">String</span>
 
 
 
@@ -109,75 +154,82 @@
 
 
 
-                <td class="description last">Configuration for the layer.
-                  <h6>Properties</h6>
 
-
-                  <table class="params">
-                    <thead>
-                      <tr>
-
-                        <th>Name</th>
-
-
-                        <th>Type</th>
-
-
-                        <th>Attributes</th>
+                <td class="description last">Current name.</td>
+              </tr>
 
 
 
+              <tr>
 
-                        <th class="last">Description</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
+                <td class="name"><code>indices</code></td>
 
 
-                      <tr>
-
-                        <td class="name"><code>port</code></td>
+                <td class="type">
 
 
-                        <td class="type">
+                  <span class="param-type">Map</span>
 
 
-                          <span class="param-type">Object</span>
-
-
-
-                        </td>
-
-
-                        <td class="attributes">
-
-                          &lt;optional><br>
-
-
-
-
-
-                        </td>
-
-
-
-
-                        <td class="description last">Port to bind to for incoming TCP connections.</td>
-                      </tr>
-
-
-                    </tbody>
-                  </table>
 
                 </td>
+
+
+
+
+
+                <td class="description last"></td>
+              </tr>
+
+
+
+              <tr>
+
+                <td class="name"><code>ledger</code></td>
+
+
+                <td class="type">
+
+
+                  <span class="param-type"><a href="Ledger.html">Ledger</a></span>
+
+
+
+                </td>
+
+
+
+
+
+                <td class="description last"></td>
+              </tr>
+
+
+
+              <tr>
+
+                <td class="name"><code>storage</code></td>
+
+
+                <td class="type">
+
+
+                  <span class="param-type">Storage</span>
+
+
+
+                </td>
+
+
+
+
+
+                <td class="description last"></td>
               </tr>
 
 
             </tbody>
           </table>
-
-
 
 
 
@@ -213,7 +265,7 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="types_fabric.js.html">types/fabric.js</a>, <a href="types_fabric.js.html#line24">line 24</a>
+                  <a href="types_chain.js.html">types/chain.js</a>, <a href="types_chain.js.html#line23">line 23</a>
                 </li>
               </ul>
             </dd>

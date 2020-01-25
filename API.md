@@ -657,6 +657,7 @@ The [Collection](#Collection) type maintains an ordered list of [State](#State) 
 * [Collection](#Collection)
     * [new Collection([configuration])](#new_Collection_new)
     * [.asMerkleTree()](#Collection+asMerkleTree) ⇒ <code>MerkleTree</code>
+    * [._setKey(name)](#Collection+_setKey)
     * [.getByID(id)](#Collection+getByID)
     * [.getLatest()](#Collection+getLatest)
     * [.findByField(name, value)](#Collection+findByField)
@@ -683,9 +684,20 @@ Create a list of [Entity](#Entity)-like objects for later retrieval.
 <a name="Collection+asMerkleTree"></a>
 
 ### collection.asMerkleTree() ⇒ <code>MerkleTree</code>
-Current elements of the collection
+Current elements of the collection as a [MerkleTree](MerkleTree).
 
 **Kind**: instance method of [<code>Collection</code>](#Collection)  
+<a name="Collection+_setKey"></a>
+
+### collection.\_setKey(name)
+Sets the `key` property of collection settings.
+
+**Kind**: instance method of [<code>Collection</code>](#Collection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | Value to set the `key` setting to. |
+
 <a name="Collection+getByID"></a>
 
 ### collection.getByID(id)
@@ -802,10 +814,10 @@ Loads [State](#State) into memory.
 
 **Kind**: instance method of [<code>Collection</code>](#Collection)  
 
-| Param | Type |
-| --- | --- |
-| state | [<code>State</code>](#State) | 
-| commit | <code>Boolean</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| state | [<code>State</code>](#State) | State to import. |
+| commit | <code>Boolean</code> | Whether or not to commit the result. |
 
 <a name="Compiler"></a>
 

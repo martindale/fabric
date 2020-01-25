@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Class: Remote &middot; Docs</title>
+  <title>Class: Service &middot; Docs</title>
   <script src="scripts/prettify/prettify.js"> </script>
   <script src="scripts/prettify/lang-css.js"> </script>
   <!--[if lt IE 9]>
@@ -15,7 +15,7 @@
 
 <body>
   <div id="main">
-    <h1 class="page-title">Class: Remote</h1>
+    <h1 class="page-title">Class: Service</h1>
 
 
 
@@ -24,9 +24,16 @@
 
       <header>
 
-        <h2><span class="attribs"><span class="type-signature"></span></span>Remote<span class="signature">(target)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Service<span class="signature">(config)</span><span class="type-signature"></span></h2>
 
-        <div class="class-description">Interact with a remote <a href="Resource.html">Resource</a>.</div>
+        <div class="class-description">The "Service" is a simple model for processing messages in a distributed
+          system. <a href="Service.html">Service</a> instances are public interfaces for outside systems,
+          and typically advertise their presence to the network.
+
+          To implement a Service, you will typically need to implement all methods from
+          this prototype. In general, `connect` and `send` are the highest-priority
+          jobs, and by default the `fabric` property will serve as an I/O stream using
+          familiar semantics.</div>
 
 
       </header>
@@ -41,7 +48,7 @@
 
 
 
-          <h4 class="name" id="Remote"><span class="type-signature"></span>new Remote<span class="signature">(target)</span><span class="type-signature"></span></h4>
+          <h4 class="name" id="Service"><span class="type-signature"></span>new Service<span class="signature">(config)</span><span class="type-signature"></span></h4>
 
 
 
@@ -49,7 +56,7 @@
 
 
           <div class="description">
-            An in-memory representation of a node in our network.
+            Create an instance of a Service.
           </div>
 
 
@@ -85,7 +92,7 @@
 
               <tr>
 
-                <td class="name"><code>target</code></td>
+                <td class="name"><code>config</code></td>
 
 
                 <td class="type">
@@ -101,7 +108,7 @@
 
 
 
-                <td class="description last">Target object.
+                <td class="description last">Configuration for this service.
                   <h6>Properties</h6>
 
 
@@ -115,7 +122,11 @@
                         <th>Type</th>
 
 
+                        <th>Attributes</th>
 
+
+
+                        <th>Default</th>
 
 
                         <th class="last">Description</th>
@@ -127,13 +138,24 @@
 
                       <tr>
 
-                        <td class="name"><code>host</code></td>
+                        <td class="name"><code>networking</code></td>
 
 
                         <td class="type">
 
 
-                          <span class="param-type">String</span>
+                          <span class="param-type">Boolean</span>
+
+
+
+                        </td>
+
+
+                        <td class="attributes">
+
+                          &lt;optional><br>
+
+
 
 
 
@@ -141,22 +163,38 @@
 
 
 
+                        <td class="default">
+
+                          true
+
+                        </td>
 
 
-                        <td class="description last">Named host, e.g. "localhost".</td>
+                        <td class="description last">Whether or not to connect to the network.</td>
                       </tr>
 
 
 
                       <tr>
 
-                        <td class="name"><code>secure</code></td>
+                        <td class="name"><code>@data</code></td>
 
 
                         <td class="type">
 
 
-                          <span class="param-type">String</span>
+                          <span class="param-type">Object</span>
+
+
+
+                        </td>
+
+
+                        <td class="attributes">
+
+                          &lt;optional><br>
+
+
 
 
 
@@ -164,9 +202,12 @@
 
 
 
+                        <td class="default">
+
+                        </td>
 
 
-                        <td class="description last">Require TLS session.</td>
+                        <td class="description last">Internal data to assign.</td>
                       </tr>
 
 
@@ -211,15 +252,10 @@
 
               <tr>
 
-                <td class="name"><code>config</code></td>
+                <td class="name"><code>map</code></td>
 
 
                 <td class="type">
-
-
-                  <span class="param-type">Object</span>
-
-
 
                 </td>
 
@@ -227,30 +263,7 @@
 
 
 
-                <td class="description last"></td>
-              </tr>
-
-
-
-              <tr>
-
-                <td class="name"><code>secure</code></td>
-
-
-                <td class="type">
-
-
-                  <span class="param-type">Boolean</span>
-
-
-
-                </td>
-
-
-
-
-
-                <td class="description last"></td>
+                <td class="description last">The "map" is a hashtable of "key" => "value" pairs.</td>
               </tr>
 
 
@@ -291,7 +304,7 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="types_remote.js.html">types/remote.js</a>, <a href="types_remote.js.html#line26">line 26</a>
+                  <a href="types_service.js.html">types/service.js</a>, <a href="types_service.js.html#line41">line 41</a>
                 </li>
               </ul>
             </dd>
@@ -349,7 +362,7 @@
 
 
 
-        <h4 class="name" id="_DELETE"><span class="type-signature">(async) </span>_DELETE<span class="signature">(path, params)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+        <h4 class="name" id="_GET"><span class="type-signature">(async) </span>_GET<span class="signature">(path)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
 
 
@@ -357,7 +370,7 @@
 
 
         <div class="description">
-          HTTP DELETE on the configured Authority.
+          Retrieve a value from the Service's state.
         </div>
 
 
@@ -409,30 +422,7 @@
 
 
 
-              <td class="description last">HTTP Path to request.</td>
-            </tr>
-
-
-
-            <tr>
-
-              <td class="name"><code>params</code></td>
-
-
-              <td class="type">
-
-
-                <span class="param-type">Object</span>
-
-
-
-              </td>
-
-
-
-
-
-              <td class="description last">Map of parameters to supply.</td>
+              <td class="description last">Path of the value to retrieve.</td>
             </tr>
 
 
@@ -475,7 +465,7 @@
           <dd class="tag-source">
             <ul class="dummy">
               <li>
-                <a href="types_remote.js.html">types/remote.js</a>, <a href="types_remote.js.html#line210">line 210</a>
+                <a href="types_service.js.html">types/service.js</a>, <a href="types_service.js.html#line295">line 295</a>
               </li>
             </ul>
           </dd>
@@ -506,7 +496,7 @@
 
 
         <div class="param-desc">
-          - Full description of remote resource.
+          Resolves with the result.
         </div>
 
 
@@ -517,7 +507,7 @@
           </dt>
           <dd>
 
-            <span class="param-type">Object</span>
+            <span class="param-type">Promise</span>
 
 
           </dd>
@@ -535,7 +525,7 @@
 
 
 
-        <h4 class="name" id="_GET"><span class="type-signature">(async) </span>_GET<span class="signature">(path, params)</span><span class="type-signature"> &rarr; {Mixed}</span></h4>
+        <h4 class="name" id="_PUT"><span class="type-signature">(async) </span>_PUT<span class="signature">(path, value, commit<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
 
 
@@ -543,7 +533,260 @@
 
 
         <div class="description">
-          HTTP GET against the configured Authority.
+          Store a value in the Service's state.
+        </div>
+
+
+
+
+
+
+
+
+
+        <h5>Parameters:</h5>
+
+
+        <table class="params">
+          <thead>
+            <tr>
+
+              <th>Name</th>
+
+
+              <th>Type</th>
+
+
+              <th>Attributes</th>
+
+
+
+              <th>Default</th>
+
+
+              <th class="last">Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+
+            <tr>
+
+              <td class="name"><code>path</code></td>
+
+
+              <td class="type">
+
+
+                <span class="param-type">String</span>
+
+
+
+              </td>
+
+
+              <td class="attributes">
+
+
+
+
+
+              </td>
+
+
+
+              <td class="default">
+
+              </td>
+
+
+              <td class="description last">Path to store the value at.</td>
+            </tr>
+
+
+
+            <tr>
+
+              <td class="name"><code>value</code></td>
+
+
+              <td class="type">
+
+
+                <span class="param-type">Object</span>
+
+
+
+              </td>
+
+
+              <td class="attributes">
+
+
+
+
+
+              </td>
+
+
+
+              <td class="default">
+
+              </td>
+
+
+              <td class="description last">Document to store.</td>
+            </tr>
+
+
+
+            <tr>
+
+              <td class="name"><code>commit</code></td>
+
+
+              <td class="type">
+
+
+                <span class="param-type">Boolean</span>
+
+
+
+              </td>
+
+
+              <td class="attributes">
+
+                &lt;optional><br>
+
+
+
+
+
+              </td>
+
+
+
+              <td class="default">
+
+                false
+
+              </td>
+
+
+              <td class="description last">Sign the resulting state.</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+
+
+
+
+
+
+        <dl class="details">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <dt class="tag-source">Source:</dt>
+          <dd class="tag-source">
+            <ul class="dummy">
+              <li>
+                <a href="types_service.js.html">types/service.js</a>, <a href="types_service.js.html#line316">line 316</a>
+              </li>
+            </ul>
+          </dd>
+
+
+
+
+
+
+
+        </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <h5>Returns:</h5>
+
+
+        <div class="param-desc">
+          Resolves with with stored document.
+        </div>
+
+
+
+        <dl>
+          <dt>
+            Type
+          </dt>
+          <dd>
+
+            <span class="param-type">Promise</span>
+
+
+          </dd>
+        </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <h4 class="name" id="_registerActor"><span class="type-signature">(async) </span>_registerActor<span class="signature">(actor)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+
+
+
+
+
+        <div class="description">
+          Register an Actor with the <a href="Service.html">Service</a>.
         </div>
 
 
@@ -579,30 +822,7 @@
 
             <tr>
 
-              <td class="name"><code>path</code></td>
-
-
-              <td class="type">
-
-
-                <span class="param-type">String</span>
-
-
-
-              </td>
-
-
-
-
-
-              <td class="description last">HTTP Path to request.</td>
-            </tr>
-
-
-
-            <tr>
-
-              <td class="name"><code>params</code></td>
+              <td class="name"><code>actor</code></td>
 
 
               <td class="type">
@@ -618,7 +838,7 @@
 
 
 
-              <td class="description last">Map of parameters to supply.</td>
+              <td class="description last">Instance of the Actor.</td>
             </tr>
 
 
@@ -661,7 +881,7 @@
           <dd class="tag-source">
             <ul class="dummy">
               <li>
-                <a href="types_remote.js.html">types/remote.js</a>, <a href="types_remote.js.html#line167">line 167</a>
+                <a href="types_service.js.html">types/service.js</a>, <a href="types_service.js.html#line555">line 555</a>
               </li>
             </ul>
           </dd>
@@ -692,7 +912,7 @@
 
 
         <div class="param-desc">
-          [description]
+          Resolves upon successful registration.
         </div>
 
 
@@ -703,7 +923,7 @@
           </dt>
           <dd>
 
-            <span class="param-type">Mixed</span>
+            <span class="param-type">Promise</span>
 
 
           </dd>
@@ -721,7 +941,7 @@
 
 
 
-        <h4 class="name" id="_OPTIONS"><span class="type-signature">(async) </span>_OPTIONS<span class="signature">(path, params)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+        <h4 class="name" id="connect"><span class="type-signature">(async) </span>connect<span class="signature">(notify)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
 
 
@@ -729,7 +949,179 @@
 
 
         <div class="description">
-          HTTP OPTIONS on the configured Authority.
+          Attach to network.
+        </div>
+
+
+
+
+
+
+
+
+
+        <h5>Parameters:</h5>
+
+
+        <table class="params">
+          <thead>
+            <tr>
+
+              <th>Name</th>
+
+
+              <th>Type</th>
+
+
+
+
+              <th>Default</th>
+
+
+              <th class="last">Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+
+            <tr>
+
+              <td class="name"><code>notify</code></td>
+
+
+              <td class="type">
+
+
+                <span class="param-type">Boolean</span>
+
+
+
+              </td>
+
+
+
+
+              <td class="default">
+
+                true
+
+              </td>
+
+
+              <td class="description last">Commit to changes.</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+
+
+
+
+
+
+        <dl class="details">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <dt class="tag-source">Source:</dt>
+          <dd class="tag-source">
+            <ul class="dummy">
+              <li>
+                <a href="types_service.js.html">types/service.js</a>, <a href="types_service.js.html#line388">line 388</a>
+              </li>
+            </ul>
+          </dd>
+
+
+
+
+
+
+
+        </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <h5>Returns:</h5>
+
+
+        <div class="param-desc">
+          Resolves to <a href="Fabric.html">Fabric</a>.
+        </div>
+
+
+
+        <dl>
+          <dt>
+            Type
+          </dt>
+          <dd>
+
+            <span class="param-type">Promise</span>
+
+
+          </dd>
+        </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <h4 class="name" id="handler"><span class="type-signature"></span>handler<span class="signature">(message)</span><span class="type-signature"> &rarr; {<a href="Service.html">Service</a>}</span></h4>
+
+
+
+
+
+
+        <div class="description">
+          Default route handler for an incoming message. Follows the Activity
+          Streams 2.0 spec: https://www.w3.org/TR/activitystreams-core/
         </div>
 
 
@@ -765,13 +1157,13 @@
 
             <tr>
 
-              <td class="name"><code>path</code></td>
+              <td class="name"><code>message</code></td>
 
 
               <td class="type">
 
 
-                <span class="param-type">String</span>
+                <span class="param-type">Activity</span>
 
 
 
@@ -781,30 +1173,7 @@
 
 
 
-              <td class="description last">HTTP Path to request.</td>
-            </tr>
-
-
-
-            <tr>
-
-              <td class="name"><code>params</code></td>
-
-
-              <td class="type">
-
-
-                <span class="param-type">Object</span>
-
-
-
-              </td>
-
-
-
-
-
-              <td class="description last">Map of parameters to supply.</td>
+              <td class="description last">Message object.</td>
             </tr>
 
 
@@ -847,7 +1216,7 @@
           <dd class="tag-source">
             <ul class="dummy">
               <li>
-                <a href="types_remote.js.html">types/remote.js</a>, <a href="types_remote.js.html#line190">line 190</a>
+                <a href="types_service.js.html">types/service.js</a>, <a href="types_service.js.html#line178">line 178</a>
               </li>
             </ul>
           </dd>
@@ -878,7 +1247,7 @@
 
 
         <div class="param-desc">
-          - Full description of remote resource.
+          Chainable method.
         </div>
 
 
@@ -889,7 +1258,7 @@
           </dt>
           <dd>
 
-            <span class="param-type">Object</span>
+            <span class="param-type"><a href="Service.html">Service</a></span>
 
 
           </dd>
@@ -907,7 +1276,7 @@
 
 
 
-        <h4 class="name" id="_PATCH"><span class="type-signature">(async) </span>_PATCH<span class="signature">(path, body)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+        <h4 class="name" id="route"><span class="type-signature">(async) </span>route<span class="signature">(msg)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
 
 
@@ -915,7 +1284,7 @@
 
 
         <div class="description">
-          HTTP PATCH on the configured Authority.
+          Resolve a <a href="State.html">State</a> from a particular <a href="Message.html">Message</a> object.
         </div>
 
 
@@ -951,13 +1320,13 @@
 
             <tr>
 
-              <td class="name"><code>path</code></td>
+              <td class="name"><code>msg</code></td>
 
 
               <td class="type">
 
 
-                <span class="param-type">String</span>
+                <span class="param-type"><a href="Message.html">Message</a></span>
 
 
 
@@ -967,30 +1336,7 @@
 
 
 
-              <td class="description last">HTTP Path to request.</td>
-            </tr>
-
-
-
-            <tr>
-
-              <td class="name"><code>body</code></td>
-
-
-              <td class="type">
-
-
-                <span class="param-type">Object</span>
-
-
-
-              </td>
-
-
-
-
-
-              <td class="description last">Map of parameters to supply.</td>
+              <td class="description last">Explicit Fabric <a href="Message.html">Message</a>.</td>
             </tr>
 
 
@@ -1033,7 +1379,7 @@
           <dd class="tag-source">
             <ul class="dummy">
               <li>
-                <a href="types_remote.js.html">types/remote.js</a>, <a href="types_remote.js.html#line200">line 200</a>
+                <a href="types_service.js.html">types/service.js</a>, <a href="types_service.js.html#line199">line 199</a>
               </li>
             </ul>
           </dd>
@@ -1064,7 +1410,7 @@
 
 
         <div class="param-desc">
-          - Full description of remote resource.
+          Resolves with resulting <a href="State.html">State</a>.
         </div>
 
 
@@ -1075,7 +1421,7 @@
           </dt>
           <dd>
 
-            <span class="param-type">Object</span>
+            <span class="param-type">Promise</span>
 
 
           </dd>
@@ -1093,7 +1439,7 @@
 
 
 
-        <h4 class="name" id="_POST"><span class="type-signature">(async) </span>_POST<span class="signature">(path, params)</span><span class="type-signature"> &rarr; {Mixed}</span></h4>
+        <h4 class="name" id="send"><span class="type-signature">(async) </span>send<span class="signature">(channel, message)</span><span class="type-signature"> &rarr; {<a href="Service.html">Service</a>}</span></h4>
 
 
 
@@ -1101,7 +1447,7 @@
 
 
         <div class="description">
-          HTTP POST against the configured Authority.
+          Send a message to a channel.
         </div>
 
 
@@ -1137,7 +1483,7 @@
 
             <tr>
 
-              <td class="name"><code>path</code></td>
+              <td class="name"><code>channel</code></td>
 
 
               <td class="type">
@@ -1153,20 +1499,20 @@
 
 
 
-              <td class="description last">HTTP Path to request.</td>
+              <td class="description last">Channel name to which the message will be sent.</td>
             </tr>
 
 
 
             <tr>
 
-              <td class="name"><code>params</code></td>
+              <td class="name"><code>message</code></td>
 
 
               <td class="type">
 
 
-                <span class="param-type">Object</span>
+                <span class="param-type">String</span>
 
 
 
@@ -1176,7 +1522,7 @@
 
 
 
-              <td class="description last">Map of parameters to supply.</td>
+              <td class="description last">Content of the message to send.</td>
             </tr>
 
 
@@ -1219,7 +1565,7 @@
           <dd class="tag-source">
             <ul class="dummy">
               <li>
-                <a href="types_remote.js.html">types/remote.js</a>, <a href="types_remote.js.html#line177">line 177</a>
+                <a href="types_service.js.html">types/service.js</a>, <a href="types_service.js.html#line450">line 450</a>
               </li>
             </ul>
           </dd>
@@ -1250,7 +1596,7 @@
 
 
         <div class="param-desc">
-          [description]
+          Chainable method.
         </div>
 
 
@@ -1261,7 +1607,7 @@
           </dt>
           <dd>
 
-            <span class="param-type">Mixed</span>
+            <span class="param-type"><a href="Service.html">Service</a></span>
 
 
           </dd>
@@ -1279,7 +1625,7 @@
 
 
 
-        <h4 class="name" id="_PUT"><span class="type-signature">(async) </span>_PUT<span class="signature">(path, body)</span><span class="type-signature"> &rarr; {Mixed}</span></h4>
+        <h4 class="name" id="start"><span class="type-signature">(async) </span>start<span class="signature">()</span><span class="type-signature"></span></h4>
 
 
 
@@ -1287,193 +1633,8 @@
 
 
         <div class="description">
-          HTTP PUT against the configured Authority.
-        </div>
-
-
-
-
-
-
-
-
-
-        <h5>Parameters:</h5>
-
-
-        <table class="params">
-          <thead>
-            <tr>
-
-              <th>Name</th>
-
-
-              <th>Type</th>
-
-
-
-
-
-              <th class="last">Description</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-
-            <tr>
-
-              <td class="name"><code>path</code></td>
-
-
-              <td class="type">
-
-
-                <span class="param-type">String</span>
-
-
-
-              </td>
-
-
-
-
-
-              <td class="description last">HTTP Path to request.</td>
-            </tr>
-
-
-
-            <tr>
-
-              <td class="name"><code>body</code></td>
-
-
-              <td class="type">
-
-
-                <span class="param-type">Object</span>
-
-
-
-              </td>
-
-
-
-
-
-              <td class="description last">Map of parameters to supply.</td>
-            </tr>
-
-
-          </tbody>
-        </table>
-
-
-
-
-
-
-        <dl class="details">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          <dt class="tag-source">Source:</dt>
-          <dd class="tag-source">
-            <ul class="dummy">
-              <li>
-                <a href="types_remote.js.html">types/remote.js</a>, <a href="types_remote.js.html#line157">line 157</a>
-              </li>
-            </ul>
-          </dd>
-
-
-
-
-
-
-
-        </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <h5>Returns:</h5>
-
-
-        <div class="param-desc">
-          [description]
-        </div>
-
-
-
-        <dl>
-          <dt>
-            Type
-          </dt>
-          <dd>
-
-            <span class="param-type">Mixed</span>
-
-
-          </dd>
-        </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <h4 class="name" id="enumerate"><span class="type-signature">(async) </span>enumerate<span class="signature">()</span><span class="type-signature"> &rarr; {Configuration}</span></h4>
-
-
-
-
-
-
-        <div class="description">
-          Enumerate the available Resources on the remote host.
+          Start the service, including the initiation of an outbound connection
+          to any peers designated in the service's configuration.
         </div>
 
 
@@ -1519,7 +1680,7 @@
           <dd class="tag-source">
             <ul class="dummy">
               <li>
-                <a href="types_remote.js.html">types/remote.js</a>, <a href="types_remote.js.html#line45">line 45</a>
+                <a href="types_service.js.html">types/service.js</a>, <a href="types_service.js.html#line228">line 228</a>
               </li>
             </ul>
           </dd>
@@ -1544,24 +1705,6 @@
 
 
 
-
-
-        <h5>Returns:</h5>
-
-
-
-
-        <dl>
-          <dt>
-            Type
-          </dt>
-          <dd>
-
-            <span class="param-type">Configuration</span>
-
-
-          </dd>
-        </dl>
 
 
 

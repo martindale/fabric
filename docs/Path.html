@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Class: Fabric &middot; Docs</title>
+  <title>Class: Path &middot; Docs</title>
   <script src="scripts/prettify/prettify.js"> </script>
   <script src="scripts/prettify/lang-css.js"> </script>
   <!--[if lt IE 9]>
@@ -15,7 +15,7 @@
 
 <body>
   <div id="main">
-    <h1 class="page-title">Class: Fabric</h1>
+    <h1 class="page-title">Class: Path</h1>
 
 
 
@@ -24,9 +24,10 @@
 
       <header>
 
-        <h2><span class="attribs"><span class="type-signature"></span></span>Fabric<span class="signature">(settings<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Path<span class="signature">(input)</span><span class="type-signature"></span></h2>
 
-        <div class="class-description">Interact with the Fabric network as if it were a local object.</div>
+        <div class="class-description">A <a href="Path.html">Path</a> is a <a href="Fabric.html">Fabric</a>-native link to a <a href="Document.html">Document</a>
+          within the network.</div>
 
 
       </header>
@@ -41,12 +42,16 @@
 
 
 
-          <h4 class="name" id="Fabric"><span class="type-signature"></span>new Fabric<span class="signature">(settings<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+          <h4 class="name" id="Path"><span class="type-signature"></span>new Path<span class="signature">(input)</span><span class="type-signature"></span></h4>
 
 
 
 
 
+
+          <div class="description">
+            Create a new <a href="Path.html">Path</a>.
+          </div>
 
 
 
@@ -69,8 +74,6 @@
                 <th>Type</th>
 
 
-                <th>Attributes</th>
-
 
 
 
@@ -83,11 +86,14 @@
 
               <tr>
 
-                <td class="name"><code>settings</code></td>
+                <td class="name"><code>input</code></td>
 
 
                 <td class="type">
 
+
+                  <span class="param-type">String</span>
+                  |
 
                   <span class="param-type">Object</span>
 
@@ -96,81 +102,10 @@
                 </td>
 
 
-                <td class="attributes">
-
-                  &lt;optional><br>
 
 
 
-
-
-                </td>
-
-
-
-
-                <td class="description last">Configuration for the layer.
-                  <h6>Properties</h6>
-
-
-                  <table class="params">
-                    <thead>
-                      <tr>
-
-                        <th>Name</th>
-
-
-                        <th>Type</th>
-
-
-                        <th>Attributes</th>
-
-
-
-
-                        <th class="last">Description</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-
-
-                      <tr>
-
-                        <td class="name"><code>port</code></td>
-
-
-                        <td class="type">
-
-
-                          <span class="param-type">Object</span>
-
-
-
-                        </td>
-
-
-                        <td class="attributes">
-
-                          &lt;optional><br>
-
-
-
-
-
-                        </td>
-
-
-
-
-                        <td class="description last">Port to bind to for incoming TCP connections.</td>
-                      </tr>
-
-
-                    </tbody>
-                  </table>
-
-                </td>
+                <td class="description last">Named path.</td>
               </tr>
 
 
@@ -213,7 +148,7 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="types_fabric.js.html">types/fabric.js</a>, <a href="types_fabric.js.html#line24">line 24</a>
+                  <a href="types_path.js.html">types/path.js</a>, <a href="types_path.js.html#line12">line 12</a>
                 </li>
               </ul>
             </dd>
@@ -254,6 +189,120 @@
 
 
 
+
+
+
+
+
+
+
+
+
+        <h3 class="subsection-title">Methods</h3>
+
+
+
+
+
+
+
+        <h4 class="name" id="isValid"><span class="type-signature"></span>isValid<span class="signature">()</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <dl class="details">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <dt class="tag-source">Source:</dt>
+          <dd class="tag-source">
+            <ul class="dummy">
+              <li>
+                <a href="types_path.js.html">types/path.js</a>, <a href="types_path.js.html#line27">line 27</a>
+              </li>
+            </ul>
+          </dd>
+
+
+
+
+
+
+
+        </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <h5>Returns:</h5>
+
+
+        <div class="param-desc">
+          Whether or not the Path is valid.
+        </div>
+
+
+
+        <dl>
+          <dt>
+            Type
+          </dt>
+          <dd>
+
+            <span class="param-type">Boolean</span>
+
+
+          </dd>
+        </dl>
 
 
 

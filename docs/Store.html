@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Class: Oracle &middot; Docs</title>
+  <title>Class: Store &middot; Docs</title>
   <script src="scripts/prettify/prettify.js"> </script>
   <script src="scripts/prettify/lang-css.js"> </script>
   <!--[if lt IE 9]>
@@ -15,7 +15,7 @@
 
 <body>
   <div id="main">
-    <h1 class="page-title">Class: Oracle</h1>
+    <h1 class="page-title">Class: Store</h1>
 
 
 
@@ -24,10 +24,9 @@
 
       <header>
 
-        <h2><span class="attribs"><span class="type-signature"></span></span>Oracle<span class="signature">(initial)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Store<span class="signature">(settings<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Store.html">Store</a>}</span></h2>
 
-        <div class="class-description">An Oracle manages one or more collections, using a <code>mempool</code> for
-          transitive state.</div>
+        <div class="class-description">Long-term storage.</div>
 
 
       </header>
@@ -42,7 +41,7 @@
 
 
 
-          <h4 class="name" id="Oracle"><span class="type-signature"></span>new Oracle<span class="signature">(initial)</span><span class="type-signature"></span></h4>
+          <h4 class="name" id="Store"><span class="type-signature"></span>new Store<span class="signature">(settings<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Store.html">Store</a>}</span></h4>
 
 
 
@@ -50,7 +49,8 @@
 
 
           <div class="description">
-            Trusted point-of-reference for external services.
+            Create an instance of a <a href="Store.html">Store</a> to manage long-term storage, which is
+            particularly useful when building a user-facing Product.
           </div>
 
 
@@ -74,7 +74,11 @@
                 <th>Type</th>
 
 
+                <th>Attributes</th>
 
+
+
+                <th>Default</th>
 
 
                 <th class="last">Description</th>
@@ -86,7 +90,7 @@
 
               <tr>
 
-                <td class="name"><code>initial</code></td>
+                <td class="name"><code>settings</code></td>
 
 
                 <td class="type">
@@ -99,10 +103,26 @@
                 </td>
 
 
+                <td class="attributes">
+
+                  &lt;optional><br>
 
 
 
-                <td class="description last">Initialization vector.</td>
+
+
+                </td>
+
+
+
+                <td class="default">
+
+                  {}
+
+                </td>
+
+
+                <td class="description last">configuration object.</td>
               </tr>
 
 
@@ -110,6 +130,58 @@
           </table>
 
 
+
+
+
+
+          <h5 class="subsection-title">Properties:</h5>
+
+
+
+          <table class="props">
+            <thead>
+              <tr>
+
+                <th>Name</th>
+
+
+                <th>Type</th>
+
+
+
+
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+
+              <tr>
+
+                <td class="name"><code>settings</code></td>
+
+
+                <td class="type">
+
+
+                  <span class="param-type">Mixed</span>
+
+
+
+                </td>
+
+
+
+
+
+                <td class="description last">Current configuration.</td>
+              </tr>
+
+
+            </tbody>
+          </table>
 
 
 
@@ -145,7 +217,7 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="types_oracle.js.html">types/oracle.js</a>, <a href="types_oracle.js.html#line17">line 17</a>
+                  <a href="types_store.js.html">types/store.js</a>, <a href="types_store.js.html#line27">line 27</a>
                 </li>
               </ul>
             </dd>
@@ -172,6 +244,28 @@
 
 
 
+          <h5>Returns:</h5>
+
+
+          <div class="param-desc">
+            Instance of the Store, ready to start.
+          </div>
+
+
+
+          <dl>
+            <dt>
+              Type
+            </dt>
+            <dd>
+
+              <span class="param-type"><a href="Store.html">Store</a></span>
+
+
+            </dd>
+          </dl>
+
+
 
 
 
@@ -179,17 +273,6 @@
 
 
         </div>
-
-
-        <h3 class="subsection-title">Extends</h3>
-
-
-
-
-        <ul>
-          <li><a href="Store.html">Store</a></li>
-        </ul>
-
 
 
 
@@ -317,15 +400,6 @@
 
 
 
-
-          <dt class="tag-overrides">Overrides:</dt>
-          <dd class="tag-overrides">
-            <ul class="dummy">
-              <li>
-                <a href="Store.html#_POST">Store#_POST</a>
-              </li>
-            </ul>
-          </dd>
 
 
 
@@ -490,15 +564,6 @@
 
 
 
-          <dt class="tag-overrides">Overrides:</dt>
-          <dd class="tag-overrides">
-            <ul class="dummy">
-              <li>
-                <a href="Store.html#_REGISTER">Store#_REGISTER</a>
-              </li>
-            </ul>
-          </dd>
-
 
 
 
@@ -564,169 +629,6 @@
           <dd>
 
             <span class="param-type"><a href="Vector.html">Vector</a></span>
-
-
-          </dd>
-        </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <h4 class="name" id="broadcast"><span class="type-signature"></span>broadcast<span class="signature">(msg)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
-
-
-
-
-
-
-        <div class="description">
-          Core messaging function for interacting with this object in system-time.
-        </div>
-
-
-
-
-
-
-
-
-
-        <h5>Parameters:</h5>
-
-
-        <table class="params">
-          <thead>
-            <tr>
-
-              <th>Name</th>
-
-
-              <th>Type</th>
-
-
-
-
-
-              <th class="last">Description</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-
-            <tr>
-
-              <td class="name"><code>msg</code></td>
-
-
-              <td class="type">
-
-
-                <span class="param-type"><a href="Message.html">Message</a></span>
-
-
-
-              </td>
-
-
-
-
-
-              <td class="description last">Instance of a module:Message object, validated then transmitted verbatim.</td>
-            </tr>
-
-
-          </tbody>
-        </table>
-
-
-
-
-
-
-        <dl class="details">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          <dt class="tag-source">Source:</dt>
-          <dd class="tag-source">
-            <ul class="dummy">
-              <li>
-                <a href="types_oracle.js.html">types/oracle.js</a>, <a href="types_oracle.js.html#line49">line 49</a>
-              </li>
-            </ul>
-          </dd>
-
-
-
-
-
-
-
-        </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <h5>Returns:</h5>
-
-
-        <div class="param-desc">
-          Returns `true` on success, `false` on failure.
-        </div>
-
-
-
-        <dl>
-          <dt>
-            Type
-          </dt>
-          <dd>
-
-            <span class="param-type">Boolean</span>
 
 
           </dd>
@@ -825,15 +727,6 @@
 
 
 
-          <dt class="tag-overrides">Overrides:</dt>
-          <dd class="tag-overrides">
-            <ul class="dummy">
-              <li>
-                <a href="Store.html#del">Store#del</a>
-              </li>
-            </ul>
-          </dd>
-
 
 
 
@@ -925,15 +818,6 @@
 
 
 
-
-          <dt class="tag-overrides">Overrides:</dt>
-          <dd class="tag-overrides">
-            <ul class="dummy">
-              <li>
-                <a href="Store.html#flush">Store#flush</a>
-              </li>
-            </ul>
-          </dd>
 
 
 
@@ -1075,15 +959,6 @@
 
 
 
-
-          <dt class="tag-overrides">Overrides:</dt>
-          <dd class="tag-overrides">
-            <ul class="dummy">
-              <li>
-                <a href="Store.html#get">Store#get</a>
-              </li>
-            </ul>
-          </dd>
 
 
 
@@ -1271,15 +1146,6 @@
 
 
 
-          <dt class="tag-overrides">Overrides:</dt>
-          <dd class="tag-overrides">
-            <ul class="dummy">
-              <li>
-                <a href="Store.html#set">Store#set</a>
-              </li>
-            </ul>
-          </dd>
-
 
 
 
@@ -1371,15 +1237,6 @@
 
 
 
-
-          <dt class="tag-overrides">Overrides:</dt>
-          <dd class="tag-overrides">
-            <ul class="dummy">
-              <li>
-                <a href="Store.html#start">Store#start</a>
-              </li>
-            </ul>
-          </dd>
 
 
 
@@ -1543,15 +1400,6 @@
 
 
 
-
-          <dt class="tag-overrides">Overrides:</dt>
-          <dd class="tag-overrides">
-            <ul class="dummy">
-              <li>
-                <a href="Store.html#trust">Store#trust</a>
-              </li>
-            </ul>
-          </dd>
 
 
 

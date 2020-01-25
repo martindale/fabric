@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>@fabric/core &middot; Docs</title>
+  <script src="scripts/prettify/prettify.js"> </script>
+  <script src="scripts/prettify/lang-css.js"> </script>
+  <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+  <div id="main">
+    <h1 class="page-title">@fabric/core</h1>
+
+
+
+
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <section>
+      <article>
+        <h1>Fabric</h1>
+        <p><img src="https://img.shields.io/badge/status-experimental-rainbow.svg?style=flat-square" alt="Project Status">
+          <a href="https://travis-ci.org/FabricLabs/fabric"><img src="https://img.shields.io/travis/FabricLabs/fabric.svg?branch=master&amp;style=flat-square" alt="Build Status"></a>
+          <a href="https://codecov.io/gh/FabricLabs/fabric"><img src="https://img.shields.io/codecov/c/github/FabricLabs/fabric.svg?style=flat-square" alt="Coverage Status"></a>
+          <a href="https://github.com/FabricLabs/fabric/graphs/contributors"><img src="https://img.shields.io/github/contributors/FabricLabs/fabric.svg?style=flat-square" alt="GitHub contributors"></a>
+          <a href="https://chat.fabric.pub"><img src="https://img.shields.io/matrix/hub:fabric.pub.svg?style=flat-square" alt="Community"></a></p>
+        <p>Fabric is an experimental approach to the secure establishment and execution of
+          peer-to -peer agreements, up to and including financial transactions. With a
+          robust library of common components, <code>npm i @fabric/core</code> provides all the tools
+          one might <code>require</code> during the development of a well-researched application of
+          decentralization technology.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>🚨 Heads up!</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Use of Fabric in production is <strong>not recommended</strong> in its current state. Please wait for <a href="https://github.com/FabricLabs/fabric/releases">an official release</a> before deploying to production environments, or proceed at your own risk.</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>Getting Started</h2>
+        <p>If you're already familiar with <code>node</code> and have a project already started, try
+          <code>npm install --save @fabric/core</code> to install <a href="https://fabric.pub">Fabric Core</a>,
+          the primary library used for most Fabric-based applications.</p>
+        <p>Fork and clone <a href="https://github.com/FabricLabs/fabric">the Fabric GitHub repository</a> and launch a local
+          web server with <code>npm run examples</code> to view the examples, or <code>npm run docs</code> once
+          you're ready to integrate Fabric into your application.</p>
+        <h2>Available Commands</h2>
+        <ul>
+          <li><code>npm run cli</code> provides a direct command-line interface to the Fabric network.</li>
+          <li><code>npm run docs</code> creates a local HTTP server for browsing documentation.</li>
+          <li><code>npm run examples</code> creates a local HTTP server for interacting with examples.</li>
+          <li><code>npm start</code> creates a local Fabric node.</li>
+        </ul>
+        <h2>API</h2>
+        <p>The Fabric reference implementation exposes a simple message-passing interface
+          using <a href="http://hdl.handle.net/1721.1/6935">the actor model</a>, enabling your downstream applications to
+          subscribe to simple events for rapid prototyping of distributed applications.</p>
+        <h3>Using as a Library</h3>
+        <p>Using the <code>EventEmitter</code> pattern, you can create an instance of Fabric to use
+          it as an event source.</p>
+        <h4>Simple Example</h4>
+        <pre class="prettyprint source lang-js"><code>const Fabric = require('fabric');
+const service = new Fabric();
+
+service.on('message', function (message) {
+  console.log('Received message from Fabric:', message);
+});
+
+service.start();
+</code></pre>
+        <p><code>service</code> now contains a full instance of Fabric, including <code>SET</code> and <code>GET</code>
+          methods for publishing and retrieving documents. Use <code>npm run examples</code> to see
+          more.</p>
+        <h3>Message Types</h3>
+        <p>Message types are as follows:</p>
+        <h4><code>message</code></h4>
+        <p>The generic message event.</p>
+        <p><strong>Properties:</strong></p>
+        <ul>
+          <li><code>@type</code> name of the event type.</li>
+          <li><code>@data</code> the content of the event, if any.</li>
+        </ul>
+        <h3>Using Fabric in the Browser</h3>
+        <p>Fabric generates a <code>fabric.min.js</code> bundle, which can be included with any HTML
+          document to expose the API in a browser.</p>
+        <h2>Other Fabrics</h2>
+        <p>Several other projects have used the name Fabric, as it's a great way to
+          describe a network of things, conjuring feelings of <em>nets</em> and <em>webs</em>. Here are
+          some links to them, as they offer some interesting things completely unrelated
+          to our goals.</p>
+        <ul>
+          <li>Fabric python project (#fabric on Freenode)</li>
+          <li>Fabric application framework by Twitter</li>
+          <li>HyperLedger Fabric, by IBM</li>
+        </ul>
+        <h2>Plugins</h2>
+        <p>Fabric is an extensible framework, supporting a variety of plugins.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th>Description</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://github.com/FabricLabs/web"><code>@fabric/http</code> </a></td>
+              <td>serve Fabric apps to the legacy web (HTTP)</td>
+              <td><a href="https://travis-ci.org/FabricLabs/web"><img src="https://img.shields.io/travis/FabricLabs/web.svg?branch=master&amp;style=flat-square" alt="Build Status"></a> <a href="https://codecov.io/gh/FabricLabs/web"><img src="https://img.shields.io/codecov/c/github/FabricLabs/web.svg?style=flat-square" alt="Coverage Status"></a></td>
+            </tr>
+            <tr>
+              <td><a href="https://github.com/FabricLabs/doorman"><code>@fabric/doorman</code> </a></td>
+              <td>an artificially intelligent assistant</td>
+              <td><a href="https://travis-ci.org/FabricLabs/doorman"><img src="https://img.shields.io/travis/FabricLabs/doorman.svg?branch=master&amp;style=flat-square" alt="Build Status"></a> <a href="https://codecov.io/gh/FabricLabs/doorman"><img src="https://img.shields.io/codecov/c/github/FabricLabs/doorman.svg?style=flat-square" alt="Coverage Status"></a></td>
+            </tr>
+          </tbody>
+        </table>
+        <h2>Running on Fabric</h2>
+        <p>Several successful projects are built with or are running on Fabric, including:</p>
+        <ul>
+          <li><a href="https://github.com/FabricLabs/doorman">Doorman</a>, an artificially intelligent assistant</li>
+          <li><a href="https://to.fabric.pub/#idlerpg:verse.im">IdleRPG</a>, a simple RPG game which rewards you for remaining idle</li>
+          <li><a href="https://verse.im">Verse</a>, a virtual universe simulator</li>
+        </ul>
+        <p>To add your project to the list, <a href="https://dev.fabric.pub">read the API docs</a>, create a public
+          repository for the source code, then <a href="https://github.com/FabricLabs/fabric/edit/master/README.md">edit this file</a> to include a
+          link to your work.</p>
+        <h2>Learning More</h2>
+        <p>The best place to get started is in <a href="https://to.fabric.pub/#learning:fabric.pub">the #learning channel</a>, a
+          collection of empassioned educators eager to help you.</p>
+        <p>Fabric on Twitter: <a href="https://twitter.com/FabricProtocol">@FabricProtocol</a></p>
+      </article>
+    </section>
+
+
+
+
+
+  </div>
+  <nav>
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+      <li><a href="App.html">App</a></li>
+      <li><a href="Chain.html">Chain</a></li>
+      <li><a href="Channel.html">Channel</a></li>
+      <li><a href="CLI.html">CLI</a></li>
+      <li><a href="Collection.html">Collection</a></li>
+      <li><a href="Compiler.html">Compiler</a></li>
+      <li><a href="Entity.html">Entity</a></li>
+      <li><a href="Fabric.html">Fabric</a></li>
+      <li><a href="Hash256.html">Hash256</a></li>
+      <li><a href="Interface.html">Interface</a></li>
+      <li><a href="Machine.html">Machine</a></li>
+      <li><a href="Mempool.html">Mempool</a></li>
+      <li><a href="Message.html">Message</a></li>
+      <li><a href="Oracle.html">Oracle</a></li>
+      <li><a href="Path.html">Path</a></li>
+      <li><a href="Peer.html">Peer</a></li>
+      <li><a href="Remote.html">Remote</a></li>
+      <li><a href="Router.html">Router</a></li>
+      <li><a href="Scribe.html">Scribe</a></li>
+      <li><a href="Script.html">Script</a></li>
+      <li><a href="Service.html">Service</a></li>
+      <li><a href="Session.html">Session</a></li>
+      <li><a href="Stack.html">Stack</a></li>
+      <li><a href="State.html">State</a></li>
+      <li><a href="Store.html">Store</a></li>
+      <li><a href="Swap.html">Swap</a></li>
+      <li><a href="Swarm.html">Swarm</a></li>
+      <li><a href="Transition.html">Transition</a></li>
+      <li><a href="Value.html">Value</a></li>
+      <li><a href="Vector.html">Vector</a></li>
+      <li><a href="Walker.html">Walker</a></li>
+      <li><a href="Wallet.html">Wallet</a></li>
+    </ul>
+  </nav>
+  <br class="clear" />
+  <footer><a href="https://github.com/FabricLabs/fabric">git://</a> &middot; <a href="https://chat.fabric.pub/#/room/#hub:fabric.pub">Community</a></footer>
+  <script type="text/javascript">
+    prettyPrint();
+  </script>
+  <script src="scripts/linenumber.js"></script>
+</body>
+
+</html>

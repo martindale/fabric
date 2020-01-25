@@ -125,24 +125,22 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-keyword">var</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'url'</span>);
-<span class="hljs-keyword">var</span> Stash = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../types/stash'</span>);
+<span class="hljs-keyword">const</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'url'</span>);
+<span class="hljs-keyword">const</span> Stash = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../types/stash'</span>);
 
 self.addEventListener(<span class="hljs-string">'message'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
   e.source.postMessage(<span class="hljs-string">'[GUARDIAN]'</span>, <span class="hljs-string">'Hello! Your message was: '</span> + e.data);
 });
 
 self.addEventListener(<span class="hljs-string">'fetch'</span>, <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) </span>{
-  <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
-  
-  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  <span class="hljs-keyword">const</span> self = <span class="hljs-keyword">this</span>;
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[GUARDIAN]'</span>, <span class="hljs-string">'request:'</span>, event);
 
-  <span class="hljs-keyword">var</span> path = event.request.url;
-  <span class="hljs-keyword">var</span> target = url.parse(path);
-  <span class="hljs-keyword">var</span> uri = target.pathname;
+  <span class="hljs-keyword">const</span> path = event.request.url;
+  <span class="hljs-keyword">const</span> target = url.parse(path);
+  <span class="hljs-keyword">const</span> uri = target.pathname;
 
-  <span class="hljs-keyword">var</span> stash = <span class="hljs-keyword">new</span> Stash();
+  <span class="hljs-keyword">const</span> stash = <span class="hljs-keyword">new</span> Stash();
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'stash:'</span>, stash);
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'target:'</span>, target);</pre></div></div>
             
@@ -161,10 +159,10 @@ self.addEventListener(<span class="hljs-string">'fetch'</span>, <span class="hlj
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'recovery:'</span>, <span class="hljs-keyword">await</span> stash.get(<span class="hljs-string">'/messages'</span>));
 
-  <span class="hljs-keyword">var</span> value = <span class="hljs-keyword">await</span> stash.get(uri);
+  <span class="hljs-keyword">const</span> value = <span class="hljs-keyword">await</span> stash.get(uri);
   <span class="hljs-keyword">if</span> (value) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'was cached:'</span>, uri, value.length, <span class="hljs-string">'bytes'</span>);
-    <span class="hljs-keyword">var</span> request = <span class="hljs-keyword">new</span> Request(uri, {</pre></div></div>
+    <span class="hljs-keyword">const</span> request = <span class="hljs-keyword">new</span> Request(uri, {</pre></div></div>
             
         </li>
         
@@ -182,7 +180,7 @@ self.addEventListener(<span class="hljs-string">'fetch'</span>, <span class="hlj
             <div class="content"><div class='highlight'><pre>      method: <span class="hljs-string">'HEAD'</span>
     });
 
-    <span class="hljs-keyword">var</span> response = <span class="hljs-keyword">await</span> fetch(request);</pre></div></div>
+    <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> fetch(request);</pre></div></div>
             
         </li>
         
@@ -193,20 +191,20 @@ self.addEventListener(<span class="hljs-string">'fetch'</span>, <span class="hlj
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>var content = await response.text();</p>
+              <p>const content = await response.text();</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> value;
   } <span class="hljs-keyword">else</span> {
-    <span class="hljs-keyword">var</span> request = <span class="hljs-keyword">new</span> Request(uri, {
+    <span class="hljs-keyword">const</span> request = <span class="hljs-keyword">new</span> Request(uri, {
       <span class="hljs-attr">headers</span>: {
         <span class="hljs-string">'X-Identity'</span>: <span class="hljs-string">'foo'</span>
       }
     });
 
-    <span class="hljs-keyword">var</span> response = <span class="hljs-keyword">await</span> fetch(request);
-    <span class="hljs-keyword">var</span> content = <span class="hljs-keyword">await</span> response.text();
+    <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> fetch(request);
+    <span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> response.text();
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'response:'</span>, uri, content.length);
 
     <span class="hljs-keyword">if</span> (content) {

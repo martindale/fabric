@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Class: Fabric &middot; Docs</title>
+  <title>Class: Script &middot; Docs</title>
   <script src="scripts/prettify/prettify.js"> </script>
   <script src="scripts/prettify/lang-css.js"> </script>
   <!--[if lt IE 9]>
@@ -15,7 +15,7 @@
 
 <body>
   <div id="main">
-    <h1 class="page-title">Class: Fabric</h1>
+    <h1 class="page-title">Class: Script</h1>
 
 
 
@@ -24,9 +24,7 @@
 
       <header>
 
-        <h2><span class="attribs"><span class="type-signature"></span></span>Fabric<span class="signature">(settings<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
-
-        <div class="class-description">Interact with the Fabric network as if it were a local object.</div>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Script<span class="signature">(config)</span><span class="type-signature"> &rarr; {<a href="Script.html">Script</a>}</span></h2>
 
 
       </header>
@@ -37,16 +35,18 @@
 
 
 
-          <h2>Constructor</h2>
+
+
+          <h4 class="name" id="Script"><span class="type-signature"></span>new Script<span class="signature">(config)</span><span class="type-signature"> &rarr; {<a href="Script.html">Script</a>}</span></h4>
 
 
 
-          <h4 class="name" id="Fabric"><span class="type-signature"></span>new Fabric<span class="signature">(settings<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
 
 
-
-
+          <div class="description">
+            Compose a <a href="Script.html">Script</a> for inclusion within a Contract.
+          </div>
 
 
 
@@ -69,8 +69,6 @@
                 <th>Type</th>
 
 
-                <th>Attributes</th>
-
 
 
 
@@ -83,24 +81,13 @@
 
               <tr>
 
-                <td class="name"><code>settings</code></td>
+                <td class="name"><code>config</code></td>
 
 
                 <td class="type">
 
 
-                  <span class="param-type">Object</span>
-
-
-
-                </td>
-
-
-                <td class="attributes">
-
-                  &lt;optional><br>
-
-
+                  <span class="param-type">Mixed</span>
 
 
 
@@ -109,68 +96,8 @@
 
 
 
-                <td class="description last">Configuration for the layer.
-                  <h6>Properties</h6>
 
-
-                  <table class="params">
-                    <thead>
-                      <tr>
-
-                        <th>Name</th>
-
-
-                        <th>Type</th>
-
-
-                        <th>Attributes</th>
-
-
-
-
-                        <th class="last">Description</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-
-
-                      <tr>
-
-                        <td class="name"><code>port</code></td>
-
-
-                        <td class="type">
-
-
-                          <span class="param-type">Object</span>
-
-
-
-                        </td>
-
-
-                        <td class="attributes">
-
-                          &lt;optional><br>
-
-
-
-
-
-                        </td>
-
-
-
-
-                        <td class="description last">Port to bind to for incoming TCP connections.</td>
-                      </tr>
-
-
-                    </tbody>
-                  </table>
-
-                </td>
+                <td class="description last">Configuration options for the script.</td>
               </tr>
 
 
@@ -213,7 +140,7 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="types_fabric.js.html">types/fabric.js</a>, <a href="types_fabric.js.html#line24">line 24</a>
+                  <a href="types_script.js.html">types/script.js</a>, <a href="types_script.js.html#line17">line 17</a>
                 </li>
               </ul>
             </dd>
@@ -238,6 +165,28 @@
 
 
 
+
+
+          <h5>Returns:</h5>
+
+
+          <div class="param-desc">
+            Instance of the <a href="Script.html">Script</a>, ready for use.
+          </div>
+
+
+
+          <dl>
+            <dt>
+              Type
+            </dt>
+            <dd>
+
+              <span class="param-type"><a href="Script.html">Script</a></span>
+
+
+            </dd>
+          </dl>
 
 
 
