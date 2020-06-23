@@ -69,14 +69,15 @@ describe('@fabric/core/types/message', function () {
       assert.equal(message.type, 'Call');
     });
 
-    it('can create from headers', async function prove(){
+    it('can create from headers', async function prove () {
       let headers = {
         magic: 10,
         version: 10,
         type: 10,
         size: 10,
-        hash: '0x7d1a54127b222502f5b79b5fb0803061152a44f92b37e23c6527baf665d4da9a', //TODO: this is overwritten by actual hash
+        hash: '0x7d1a54127b222502f5b79b5fb0803061152a44f92b37e23c6527baf665d4da9a', // TODO: this is overwritten by actual hash
       };
+
       let message = Fabric.Message.fromRaw({
         headers: headers,
         data: 'abcdefg',
@@ -84,7 +85,6 @@ describe('@fabric/core/types/message', function () {
 
       assert.ok(message);
 
-      console.log("TYPE OF HASH", typeof message.raw.hash)
       assert.equal('0x'+message.raw.hash.toString('hex'), headers.hash);
     })
   });
