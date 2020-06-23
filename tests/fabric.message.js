@@ -75,7 +75,7 @@ describe('@fabric/core/types/message', function () {
         version: 10,
         type: 10,
         size: 10,
-        hash: '0x12312312389123891289381293012903',
+        hash: '0x7d1a54127b222502f5b79b5fb0803061152a44f92b37e23c6527baf665d4da9a', //TODO: this is overwritten by actual hash
       };
       let message = Fabric.Message.fromRaw({
         headers: headers,
@@ -84,6 +84,7 @@ describe('@fabric/core/types/message', function () {
 
       assert.ok(message);
 
+      console.log("TYPE OF HASH", typeof message.raw.hash)
       assert.equal('0x'+message.raw.hash.toString('hex'), headers.hash);
     })
   });
