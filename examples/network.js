@@ -1,25 +1,6 @@
 'use strict';
 
 const Fabric = require('../');
-const {
-  MAGIC_BYTES,
-  VERSION_NUMBER,
-  HEADER_SIZE,
-  MAX_MESSAGE_SIZE,
-  OP_CYCLE,
-  P2P_IDENT_REQUEST,
-  P2P_IDENT_RESPONSE,
-  P2P_ROOT,
-  P2P_PING,
-  P2P_PONG,
-  P2P_INSTRUCTION,
-  P2P_BASE_MESSAGE,
-  P2P_STATE_ROOT,
-  P2P_STATE_COMMITTMENT,
-  P2P_STATE_CHANGE,
-  P2P_TRANSACTION,
-  P2P_CALL
-} = require('../constants');
 
 console.log("FABRIC", Fabric)
 
@@ -43,7 +24,7 @@ async function simulate () {
     let id = i; //node.id;
 
     console.log(`node id:`, id);
-    
+
     nodes[id] = node;
     ids.push(id);
   }
