@@ -2,8 +2,6 @@
 
 const Fabric = require('../');
 
-console.log("FABRIC", Fabric)
-
 const NETWORK_NAME = 'playnet';
 const NODE_COUNT = 3;
 const PEERING_PORT = 7450;
