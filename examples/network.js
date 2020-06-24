@@ -1,6 +1,27 @@
 'use strict';
 
 const Fabric = require('../');
+const {
+  MAGIC_BYTES,
+  VERSION_NUMBER,
+  HEADER_SIZE,
+  MAX_MESSAGE_SIZE,
+  OP_CYCLE,
+  P2P_IDENT_REQUEST,
+  P2P_IDENT_RESPONSE,
+  P2P_ROOT,
+  P2P_PING,
+  P2P_PONG,
+  P2P_INSTRUCTION,
+  P2P_BASE_MESSAGE,
+  P2P_STATE_ROOT,
+  P2P_STATE_COMMITTMENT,
+  P2P_STATE_CHANGE,
+  P2P_TRANSACTION,
+  P2P_CALL
+} = require('../constants');
+
+console.log("FABRIC", Fabric)
 
 const NETWORK_NAME = 'playnet';
 const NODE_COUNT = 3;
@@ -18,9 +39,13 @@ async function simulate () {
     let node = new Fabric.Peer({
       port: PEERING_PORT + i
     });
-    console.log(`node id: ${node.id}`, node.id);
-    nodes[node.id] = node;
-    ids.push(node.id);
+
+    let id = i; //node.id;
+
+    console.log(`node id:`, id);
+    
+    nodes[id] = node;
+    ids.push(id);
   }
 
   console.log('nodes:', nodes);
@@ -46,7 +71,7 @@ async function simulate () {
   }
 
   let origin = nodes[ids[0]];
-  let message = Fabric.Message.fromVector([0x00000012, Date.now() + '']); // ping
+  let message = Fabric.Message.fromVector(['Ping', Date.now() + '']); // ping
 
   console.log('broadcasting message to all peers:', message);
 
