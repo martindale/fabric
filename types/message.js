@@ -158,7 +158,6 @@ class Message extends Vector {
 
       message.data = Buffer.from(input.data, 'utf8');
     } else if (input instanceof Buffer) {
-      let size = input.slice(HEADER_SIZE);
       message.raw = {
         magic: input.slice(0, 4),
         version: input.slice(4, 8),
@@ -167,7 +166,8 @@ class Message extends Vector {
         hash: input.slice(16, 48)
       };
 
-      message.data = input.slice(HEADER_SIZE, HEADER_SIZE + size);
+      let size = input.length - HEADER_SIZE;
+      message.data = input.slice(HEADER_SIZE, size + HEADER_SIZE);
     } else {
       let input = Buffer.from(input, 'hex');
       message['@type'] = 'rarifiedHex';
@@ -179,6 +179,7 @@ class Message extends Vector {
         hash: input.slice(16, 48)
       };
 
+      let size = input.length - HEADER_SIZE;
       message.data = input.slice(HEADER_SIZE, HEADER_SIZE + size);
     }
 

@@ -204,6 +204,7 @@ class Peer extends Scribe {
 
         console.log('[FABRIC:PEER]', 'Inbound message type:', message.type);
         console.log('[FABRIC:PEER]', 'Total inbound messages:', self.meta.messages.inbound);
+        console.log('[FABRIC:PEER] MESSAGE DATA', message.raw)
 
         // disconnect from any peer sending invalid messages
         if (!message) return this.destroy();
@@ -409,7 +410,8 @@ class Peer extends Scribe {
         response = Message.fromVector(['StateRoot', JSON.stringify(self.state)]);
         break;
       case 'PeerMessage':
-        console.trace('[FABRIC:PEER]', 'Received "PeerMessage" on socket:', message.raw);
+        //console.trace('[FABRIC:PEER]', 'Received "PeerMessage" on socket:', message.raw);
+        console.log("[PEER MESSAGE]", message.raw);
         break;
       case 'StateRoot':
         if (self.settings.verbosity >= 5) console.log('[AUDIT]', 'Message was a state root:', message.data);
@@ -425,7 +427,7 @@ class Peer extends Scribe {
             'data': state
           };
         } catch (E) {
-          console.error('[FABRIC:PEER]', 'Could not parse StateRoot:', E);
+          //console.error('[FABRIC:PEER]', 'Could not parse StateRoot:', E);
         }
         break;
       case 'StateChange':
