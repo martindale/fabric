@@ -120,16 +120,35 @@ class Peer extends Scribe {
   }
 
   async stop () {
+    const peer = this;
     this.log('Peer stopping...');
 
     for (const id in this.connections) {
       const connection = this.connections[id];
-      // TODO: notify peer of disconnect
-      await connection.end();
+      const closer = async function () {
+        return new Promise((resolve, reject) => {
+          // TODO: notify remote peer of closure
+          // Use end(SOME_CLOSE_MESSAGE, ...)
+          return connection.end(function socketClosed (error) {
+            if (error) return reject(error);
+            resolve();
+          });
+        });
+      }
+      await closer();
     }
 
-    // TODO: close only when listening actively
-    await this.server.close();
+    const terminator = async function () {
+      return new Promise((resolve, reject) => {
+        if (!peer.server.address()) return resolve();
+        return peer.server.close(function serverClosed (error) {
+          if (error) return reject(error);
+          resolve();
+        });
+      });
+    }
+
+    await terminator();
 
     return this;
   }
@@ -191,19 +210,29 @@ class Peer extends Scribe {
         if (!message) return this.destroy();
 
         let response = await self._handleMessage({
+          message: message,
           origin: address,
-          message: message
+          peer: {
+            address: address,
+            id: 'FAKE PEER'
+          }
         });
 
         if (response) {
           self.meta.messages.outbound++;
+          if (!this.writable) {
+            console.trace('[FABRIC:PEER]', 'Socket is not writable.');
+            return false;
+          }
+
           this.write(response.asRaw());
         }
       });
 
       // TODO: replace with handshake
       // NOTE: the handler is only called once per connection!
-      self.connections[address].connect(parts[1], parts[0], function () {
+      self.connections[address].connect(parts[1], parts[0], function connectionAttemptComplete (error) {
+        if (error) return new Error(`Could not establish connection: ${error}`);
         if (self.settings.verbosity >= 5) console.log('[FABRIC:PEER]', 'Connection created...');
         const session = new Session();
         // const m = new Message();
@@ -212,6 +241,11 @@ class Peer extends Scribe {
         const message = Message.fromVector(vector);
 
         self.meta.messages.outbound++;
+        if (!this.writable) {
+          console.trace('[FABRIC:PEER]', 'Socket is not writable.');
+          return false;
+        }
+
         self.connections[address].write(message.asRaw());
 
         self.emit('connections:open', {
@@ -323,9 +357,15 @@ class Peer extends Scribe {
     self.peers[peer.id] = peer;
 
     console.log('[FABRIC:PEER]', 'Peer registered:', peer);
+    console.log('[FABRIC:PEER]', 'Peer list:', self.peers);
     self.emit('peer', peer);
 
     return true;
+  }
+
+  async _requestStateFromAllPeers () {
+    let message = Message.fromVector(['StateRequest']);
+    this.broadcast(message);
   }
 
   async _handleMessage (packet) {
@@ -333,6 +373,7 @@ class Peer extends Scribe {
     if (this.settings.verbosity >= 5) console.log('[FABRIC:PEER]', 'Handling packet from peer:', packet.message.id);
 
     let self = this;
+    let relay = false;
     let response = null;
     let message = packet.message;
 
@@ -352,6 +393,7 @@ class Peer extends Scribe {
         break;
       case 'GenericMessage':
         console.warn('[FABRIC:PEER]', 'Received Generic Message:', message.data);
+        relay = true;
         break;
       case 'IdentityRequest':
         console.log('[FABRIC:PEER]', 'Peer sent IdentityRequest.  Responding with IdentityResponse (node id)...', self.id);
@@ -374,11 +416,15 @@ class Peer extends Scribe {
         if (self.settings.verbosity >= 5) console.log('[AUDIT]', 'Message was a state root:', message.data);
 
         // TODO: test protocol flow (i.e., understand StateRoot)
-        // console.log('[AUDIT]', 'Message was a state root:', message);
+        console.log('[AUDIT]', 'Message was a state root:', message.raw, message.data);
 
         try {
           const state = JSON.parse(message.data);
           self.emit('state', state);
+          response = {
+            'type': 'Receipt',
+            'data': state
+          };
         } catch (E) {
           //console.error('[FABRIC:PEER]', 'Could not parse StateRoot:', E);
         }
@@ -420,6 +466,10 @@ class Peer extends Scribe {
     // Emit for listeners
     self.emit('message', message);
 
+    if (relay) {
+      self.relayFrom(origin, message);
+    }
+
     return response;
   }
 
@@ -442,17 +492,31 @@ class Peer extends Scribe {
     }
   }
 
+  relayFrom (origin, message) {
+    for (let id in this.peers) {
+      if (id === origin) continue;
+      let peer = this.peers[id];
+      let msg = Message.fromVector(['PeerMessage', message]);
+
+      try {
+        this.connections[peer.address].write(msg.asRaw());
+      } catch (exception) {
+        console.error('[FABRIC:PEER]', `Could not wriite message to connection "${peer.address}":`, exception);
+      }
+    }
+  }
+
   broadcast (message) {
     // TODO: coerce type, prefer `Message`
     if (typeof message !== 'string') message = JSON.stringify(message);
-    let id = crypto.createHash('sha256').update(message).digest('hex');
+    let hash = crypto.createHash('sha256').update(message).digest('hex');
 
-    if (this.messages.has(id)) {
-      console.log('attempted to broadcast duplicate message');
+    if (this.messages.has(hash)) {
+      if (this.settings.verbosity >= 3) console.warn('[FABRIC:PEER]', `Attempted to broadcast duplicate message ${hash} with content:`, message);
       return false;
     } else {
-      this.memory[id] = message;
-      this.messages.add(id);
+      this.memory[hash] = message;
+      this.messages.add(hash);
     }
 
     for (let id in this.peers) {
