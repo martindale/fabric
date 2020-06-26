@@ -1,6 +1,7 @@
 'use strict';
 
 const Peer = require('../types/peer');
+const Fabric = require('../lib/fabric');
 
 const NETWORK_NAME = 'playnet';
 const NODE_COUNT = 3;
@@ -46,7 +47,7 @@ async function simulate () {
   }
 
   let origin = nodes[ids[0]];
-  let message = Fabric.Message.fromVector([0x00000012, Date.now() + '']); // ping
+  let message = Fabric.Message.fromVector(['Ping', Date.now() + '']); // ping
 
   console.log('broadcasting message to all peers:', message);
 

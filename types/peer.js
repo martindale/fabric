@@ -85,11 +85,19 @@ class Peer extends Scribe {
       }
     };
 
+    this.id_fallback = this.key.pubkey.substr(0,16);
+
     return this;
   }
 
   get id () {
-    return this.wallet.shard[0].string;
+    let res = null;
+    //if(this.wallet.shard)
+      res = this.wallet.shard[0].string;
+
+    //res = this.id_fallback;
+
+    return res;
   }
 
   async start () {
