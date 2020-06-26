@@ -85,19 +85,11 @@ class Peer extends Scribe {
       }
     };
 
-    this.id_fallback = this.key.pubkey.substr(0,16);
-
     return this;
   }
 
   get id () {
-    let res = null;
-    //if(this.wallet.shard)
-      res = this.wallet.shard[0].string;
-
-    //res = this.id_fallback;
-
-    return res;
+    return this.wallet.shard[0].string;
   }
 
   async start () {
@@ -193,7 +185,7 @@ class Peer extends Scribe {
 
         console.log('[FABRIC:PEER]', 'Inbound message type:', message.type);
         console.log('[FABRIC:PEER]', 'Total inbound messages:', self.meta.messages.inbound);
-        console.log('[FABRIC:PEER] MESSAGE DATA', message.raw)
+        //console.log('[FABRIC:PEER] MESSAGE DATA', message.raw)
 
         // disconnect from any peer sending invalid messages
         if (!message) return this.destroy();
@@ -377,7 +369,6 @@ class Peer extends Scribe {
         break;
       case 'PeerMessage':
         //console.trace('[FABRIC:PEER]', 'Received "PeerMessage" on socket:', message.raw);
-        console.log("[PEER MESSAGE]", message.raw);
         break;
       case 'StateRoot':
         if (self.settings.verbosity >= 5) console.log('[AUDIT]', 'Message was a state root:', message.data);

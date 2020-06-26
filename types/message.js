@@ -155,9 +155,7 @@ class Message extends Vector {
         hash: parseInt(input.headers['hash'], 16)
       };
 
-      message.data = Buffer.from(input.data, 'utf8');
-
-      console.log("[FROM RAW] HEADERS")
+      message.data = Buffer.from(input.data, 'utf8');      
     } else if (input instanceof Buffer) {
       message.raw = {
         magic: input.slice(0, 4),
@@ -169,13 +167,7 @@ class Message extends Vector {
 
       let size = input.length - HEADER_SIZE;
       message.data = input.slice(HEADER_SIZE, size+HEADER_SIZE);
-
-      console.log("[FROM RAW] BUFFER");
-      console.log("[SIZE] HEADER", HEADER_SIZE, "BODY", size)
-      console.log("[BODY DATA]", message.data)
     } else {
-      console.log("[FROM RAW] OTHER");
-
       let input = Buffer.from(input, 'hex');
       message['@type'] = 'rarifiedHex';
       message.raw = {
