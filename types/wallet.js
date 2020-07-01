@@ -152,6 +152,8 @@ class Wallet extends Service {
 
     this.status = 'closed';
 
+    this.space = {};
+
     return this;
   }
 
@@ -358,7 +360,7 @@ class Wallet extends Service {
 
   /**
    * Returns a bech32 address for the provided {@link Script}.
-   * @param {Script} script 
+   * @param {Script} script
    */
   getAddressForScript (script) {
     // TODO: use Fabric.Script
@@ -369,7 +371,7 @@ class Wallet extends Service {
 
   /**
    * Generate a {@link BitcoinAddress} for the supplied {@link BitcoinScript}.
-   * @param {BitcoinScript} redeemScript 
+   * @param {BitcoinScript} redeemScript
    */
   getAddressFromRedeemScript (redeemScript) {
     if (!redeemScript) return null;
@@ -815,7 +817,7 @@ class Wallet extends Service {
 
   /**
    * Signs a transaction with the keyring.
-   * @param {BcoinTX} tx 
+   * @param {BcoinTX} tx
    */
   async _sign (tx) {
     let signature = await tx.sign(this.keyring);
@@ -826,7 +828,7 @@ class Wallet extends Service {
 
   /**
    * Create a crowdfunding transaction.
-   * @param {Object} fund 
+   * @param {Object} fund
    */
   async _createCrowdfund (fund = {}) {
     if (!fund.amount) return null;
@@ -967,7 +969,7 @@ class Wallet extends Service {
     // Create a mutable transaction object
     let redeemTX = new MTX();
 
-    // Get the output we want to spend (coins sent to the P2SH address) 
+    // Get the output we want to spend (coins sent to the P2SH address)
     let coin = Coin.fromTX(fundingTX, fundingTXoutput, -1);
 
     // Add that coin as an input to our transaction
@@ -1021,8 +1023,8 @@ class Wallet extends Service {
 
   /**
    * Generate {@link Script} for claiming a {@link Swap}.
-   * @param {*} redeemScript 
-   * @param {*} secret 
+   * @param {*} redeemScript
+   * @param {*} secret
    */
   async _getSwapInputScript (redeemScript, secret) {
     let inputSwap = new Script();
@@ -1038,7 +1040,7 @@ class Wallet extends Service {
 
   /**
    * Generate {@link Script} for reclaiming funds commited to a {@link Swap}.
-   * @param {*} redeemScript 
+   * @param {*} redeemScript
    */
   async _getRefundInputScript (redeemScript) {
     let inputRefund = new Script();
@@ -1137,11 +1139,11 @@ class Wallet extends Service {
   }
 
   async _allocateSlot () {
-    for (let i = 0; i < Object.keys(this._state.space).length; i++) {
-      let slot = this._state.space[Object.keys(this._state.space)[i]];
+    for (let i = 0; i < Object.keys(this.space).length; i++) {
+      let slot = this.space[Object.keys(this.space)[i]];
       if (!slot.allocation) {
-        this._state.space[Object.keys(this._state.space)[i]].allocation = new Secret();
-        return this._state.space[Object.keys(this._state.space)[i]];
+        this.space[Object.keys(this.space)[i]].allocation = new Secret();
+        return this.space[Object.keys(this.space)[i]];
       }
     }
   }
@@ -1164,7 +1166,8 @@ class Wallet extends Service {
       });
 
       // TODO: restore address tracking in state
-      // this._state.space[addr] = address;
+      if(!this.space) this.space = {};
+      this.space[addr] = address;
 
       slice.push(address);
     }
@@ -1249,7 +1252,7 @@ class Wallet extends Service {
 
   /**
    * Initialize the wallet, including keys and addresses.
-   * @param {Object} settings 
+   * @param {Object} settings
    */
   async _load (settings = {}) {
     if (this.wallet) return this;

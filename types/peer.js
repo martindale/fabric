@@ -519,7 +519,7 @@ class Peer extends Scribe {
             'data': state
           };
         } catch (E) {
-          console.error('[FABRIC:PEER]', 'Could not parse StateRoot:', E);
+          //console.error('[FABRIC:PEER]', 'Could not parse StateRoot:', E);
         }
         break;
       case 'StateChange':
