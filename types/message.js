@@ -169,8 +169,7 @@ class Message extends Vector {
         size: input.slice(12, 16),
         hash: input.slice(16, 48)
       };
-
-      let size = input.length - HEADER_SIZE;
+      
       message.data = input.slice(HEADER_SIZE, size+HEADER_SIZE);
     } else {
       let input = Buffer.from(input, 'hex');
@@ -186,7 +185,7 @@ class Message extends Vector {
         hash: input.slice(16, 48)
       };
 
-      let size = input.length - HEADER_SIZE;
+
       message.data = input.slice(HEADER_SIZE, HEADER_SIZE + size);
     }
 
