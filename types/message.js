@@ -295,7 +295,13 @@ Object.defineProperty(Message.prototype, 'data', {
     const hash = crypto.createHash('sha256').update(value.toString('utf8'));
     this.raw.hash = hash.digest();
     this.raw.data = Buffer.from(value);
-    this.raw.size.write(padDigits(this.raw.data.byteLength.toString(16), 8), 'hex');
+
+    // TODO: enforce types on `raw`
+    if (typeof this.raw.size === 'number') { // TODO: always use same type for size
+      this.raw.size = this.raw.data.byteLength;
+    } else {
+      this.raw.size.write(padDigits(this.raw.data.byteLength.toString(16), 8), 'hex');
+    }
   }
 });
 

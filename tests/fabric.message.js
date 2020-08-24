@@ -68,5 +68,24 @@ describe('@fabric/core/types/message', function () {
       assert.equal(literal.headers.hash, '29ef07455d1e3ab5f0b5ad485d4bb85a00a4dd4003dabd43cab0f43199fc316e');
       assert.equal(message.type, 'Call');
     });
+
+    it('can create from headers', async function prove () {
+      let headers = {
+        magic: 10,
+        version: 10,
+        type: 10,
+        size: 10,
+        hash: '0x7d1a54127b222502f5b79b5fb0803061152a44f92b37e23c6527baf665d4da9a', // TODO: this is overwritten by actual hash
+      };
+
+      let message = Fabric.Message.fromRaw({
+        headers: headers,
+        data: 'abcdefg',
+      });
+
+      assert.ok(message);
+
+      assert.equal('0x'+message.raw.hash.toString('hex'), headers.hash);
+    })
   });
 });
