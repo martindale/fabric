@@ -18,9 +18,13 @@ async function simulate () {
     let node = new Fabric.Peer({
       port: PEERING_PORT + i
     });
-    console.log(`node id: ${node.id}`, node.id);
-    nodes[node.id] = node;
-    ids.push(node.id);
+
+    let id = i; //node.id;
+
+    console.log(`node id:`, id);
+
+    nodes[id] = node;
+    ids.push(id);
   }
 
   console.log('nodes:', nodes);
@@ -46,7 +50,7 @@ async function simulate () {
   }
 
   let origin = nodes[ids[0]];
-  let message = Fabric.Message.fromVector([0x00000012, Date.now() + '']); // ping
+  let message = Fabric.Message.fromVector(['Ping', Date.now() + '']); // ping
 
   console.log('broadcasting message to all peers:', message);
 
