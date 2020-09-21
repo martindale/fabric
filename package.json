@@ -66,8 +66,6 @@
     "@webassemblyjs/ast": "^1.8.5",
     "arbitrary": "^1.4.10",
     "base58check": "^2.0.0",
-    "bcash": "bcoin-org/bcash#master",
-    "bcoin": "bcoin-org/bcoin#master",
     "content-type": "^1.0.4",
     "dotparser": "^0.3.0",
     "elliptic": "^6.4.0",
@@ -80,7 +78,6 @@
     "javascript-state-machine": "^3.1.0",
     "js-beautify": "^1.10.0",
     "json-pointer": "^0.6.0",
-    "level": "^5.0.1",
     "lodash.merge": "^4.6.2",
     "merkletreejs": "^0.1.6",
     "mkdirp": "^0.5.1",
@@ -93,7 +90,6 @@
     "struct": "^0.0.12"
   },
   "devDependencies": {
-    "@fabric/http": "FabricLabs/web#develop",
     "blessed": "^0.1.81",
     "body-parser": "^1.18.2",
     "chai": "^4.0.2",
