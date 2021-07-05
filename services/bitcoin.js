@@ -81,7 +81,7 @@ class Bitcoin extends Service {
     // Internal Services
     this.provider = new Consensus({ provider: 'bcoin' });
     this.wallet = new Wallet(this.settings);
-    this.chain = new Chain(this.settings);
+    // this.chain = new Chain(this.settings);
 
     // ## Collections
     // ### Blocks
@@ -199,7 +199,7 @@ class Bitcoin extends Service {
     if (this.settings.fullnode) {
       return this.fullnode.chain.tip.hash.toString('hex');
     } else {
-      return (this.chain.tip) ? this.chain.tip.toString('hex') : null;
+      return (this.chain && this.chain.tip) ? this.chain.tip.toString('hex') : null;
     }
   }
 
@@ -219,6 +219,10 @@ class Bitcoin extends Service {
     // await this.spv.broadcast(msg);
     await this.spv.relay(msg);
     console.log('[SERVICES:BITCOIN]', 'Broadcasted!');
+  }
+
+  async _heartbeat () {
+    await this._checkRPCBlockNumber();
   }
 
   async _prepareBlock (obj) {
@@ -592,7 +596,7 @@ class Bitcoin extends Service {
           return false;
         }
       });
-  
+
       this.peer.on('error', this._handlePeerError.bind(this));
       this.peer.on('packet', this._handlePeerPacket.bind(this));
       this.peer.on('open', () => {
@@ -738,9 +742,11 @@ class Bitcoin extends Service {
 
   async _syncBalanceFromOracle () {
     const balance = await this._makeRPCRequest('getbalance');
-    this.balance = balance;
+    this._state.balance = balance;
+    this.emit('message', `balance sync: ${balance}`);
     const commit = await this.commit();
     const actor = new Actor(commit.data);
+    this.emit('message', `balance sync, commit: ${commit}`);
     return {
       type: 'OracleBalance',
       data: {
@@ -806,17 +812,10 @@ class Bitcoin extends Service {
    */
   async start () {
     if (this.settings.verbosity >= 4) console.log('[SERVICES:BITCOIN]', `Starting for network "${this.settings.network}"...`);
-
     const self = this;
-    const service = this;
-    let secure = false;
+    self.status = 'starting';
 
-    // Assign Status
-    service.status = 'starting';
-
-    // Local Variables
-    let client = null;
-
+    if (this.store) await this.store.open();
     if (this.settings.fullnode) {
       this.fullnode.on('peer connect', function peerConnectHandler (peer) {
         self.emit('warning', `[SERVICES:BITCOIN]', 'Peer connected to Full Node: ${peer}`);
@@ -848,45 +847,33 @@ class Bitcoin extends Service {
 
     // Start services
     await this.wallet.start();
-    await this.chain.start();
+    // await this.chain.start();
 
     // Start nodes
     if (this.settings.fullnode) await this._startLocalNode();
     if (this.settings.mode === 'rpc') {
-      const providers = service.settings.servers.map(x => new URL(x));
-      // TODO: loop through all providers
-      let provider = providers[0];
-      if (provider.protocol === 'https:') secure = true;
-      const auth = provider.username + ':' + provider.password;
+      const provider = new URL(self.settings.authority);
       const config = {
-        headers: { 'Authorization': `Basic ${Buffer.from(auth, 'utf8').toString('base64')}` },
         host: provider.hostname,
         port: provider.port
       };
 
-      if (secure) {
-        client = jayson.client.https(config);
+      if (provider.protocol === 'https:') {
+        const auth = provider.username + ':' + provider.password;
+        config.headers = { Authorization: `Basic ${Buffer.from(auth, 'utf8').toString('base64')}` };
+        self.rpc = jayson.client.https(config);
       } else {
-        client = jayson.client.http(config);
+        self.rpc = jayson.client.http(config);
       }
 
-      // Link generated client to `rpc` property
-      service.rpc = client;
-
-      await this._syncBalanceFromOracle();
-
-      // Assign Heartbeat
-      // service.heartbeat = setInterval(service._heartbeat.bind(service), service.settings.interval);
-
-      // DEVCODE
-      // TODO: cleanup
       try {
-        // await self._syncWithRPC();
+        await this._syncBalanceFromOracle();
       } catch (exception) {
-        self.emit('error', `Could not prepare session with RPC host: ${exception}`);
+        this.emit('error', exception);
+        return this;
       }
 
-      self.heartbeat = setInterval(self._checkRPCBlockNumber.bind(self), self.settings.interval);
+      self.heartbeat = setInterval(self._heartbeat.bind(self), self.settings.interval);
     }
 
     // TODO: re-enable these
@@ -921,7 +908,7 @@ class Bitcoin extends Service {
     if (this.peer && this.peer.connected) await this.peer.destroy();
     if (this.fullnode) await this.fullnode.close();
     await this.wallet.stop();
-    await this.chain.stop();
+    // await this.chain.stop();
   }
 }
 
