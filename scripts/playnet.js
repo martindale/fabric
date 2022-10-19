@@ -30,9 +30,14 @@ async function main (input = {}) {
     report();
   }
 
+  // Generate first report
   await report();
+
   const agent = setInterval(generate, INTERVAL);
-  return { id: bitcoin.id };
+  return {
+    id: bitcoin.id,
+    agent: agent
+  };
 }
 
 const safe = Object.assign({}, settings);
