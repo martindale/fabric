@@ -46,7 +46,9 @@ class Store extends Actor {
     this._state = {
       actors: {},
       collections: {},
-      content: {},
+      content: {
+        secrets: {}
+      },
       documents: {},
       metadata: {},
       indices: {},
